@@ -1,0 +1,3 @@
+tools/*
+!tools/list.txt
+!tools/commands.txt

@@ -1,0 +1,7 @@
+tools/css-validator-20190320.jar
+https://github.com/w3c/css-validator/releases/download/cssval-20190320/css-validator.jar
+from https://github.com/w3c/css-validator/releases
+
+tools/vnu-18.11.5.jar
+https://github.com/validator/validator/releases/download/18.11.5/vnu.jar_18.11.5.zip
+from https://github.com/validator/validator/releases
