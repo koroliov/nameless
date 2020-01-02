@@ -1,3 +1,5 @@
+- set up unit tests
+- set up unit build
 - create the pie chart
   - create a round pie
   - scale the pie
