@@ -1,0 +1,14 @@
+{
+  "name": "charts",
+  "version": "0.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "val-html": "java -jar tools/vnu.jar charts.html",
+    "val-css": "java -jar tools/css-validator.jar 1>/dev/null file:charts.html"
+  },
+  "private": true,
+  "author": "Dmitry Korolyov",
+  "license": "MIT"
+}
