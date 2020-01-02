@@ -1,0 +1,3 @@
+"val-html": "java -jar tools/vnu.jar file.html",
+"val-css": "java -jar tools/css-validator.jar 1>/dev/null \
+  file:/path/to/file.html"
