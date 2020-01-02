@@ -1,4 +1,6 @@
 - create the pie chart
   - create a round pie
-  - create a rotated pie
+  - scale the pie
+  - rotate the pie
+  - skew the pie
   - add a rectangular legend
