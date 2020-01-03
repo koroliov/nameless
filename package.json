@@ -4,12 +4,16 @@
   "description": "",
   "main": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tape test/*.test.js",
+    "build": "browserify src/main.js -o current/charts.js",
     "val-html": "java -jar tools/vnu.jar charts.html",
     "val-css": "java -jar tools/css-validator.jar 1>/dev/null file:charts.html"
   },
   "private": true,
-  "author": "Dmitry Korolyov",
-  "license": "MIT"
   "author": "Dmitry Koroliov",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^16.5.0",
+    "tape": "^4.12.1"
+  }
 }

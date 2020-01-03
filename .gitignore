@@ -1,3 +1,4 @@
+node_modules/
 tools/*
 !tools/list.txt
 !tools/command-examples.txt
