@@ -68,3 +68,16 @@ tp('works if subsequent percent vals are smaller', t => {
   t.deepEqual(actual, expected);
   t.end();
 });
+
+tp('works with float percent vals', t => {
+  const percents = [25.0, 3.197];
+  const startAngle = 0;
+  const expected = [];
+  expected[0] = onePercentAngle * percents[0] + startAngle;
+  expected[1] = expected[0] + onePercentAngle * percents[1];
+  expected[2] = startAngle;
+
+  const actual = calcAnglesFromPercent(percents);
+  t.deepEqual(actual, expected);
+  t.end();
+});
