@@ -6,8 +6,8 @@
   "scripts": {
     "test": "tape test/*.test.js",
     "build": "browserify src/main.js -o current/charts.js",
-    "val-html": "java -jar tools/vnu.jar charts.html",
-    "val-css": "java -jar tools/css-validator.jar 1>/dev/null file:charts.html"
+    "val-html": "java -jar tools/vnu.jar current/charts.html",
+    "val-css": "java -jar tools/css-validator.jar 1>/dev/null file:current/charts.html"
   },
   "private": true,
   "author": "Dmitry Koroliov",
