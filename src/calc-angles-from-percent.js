@@ -1,13 +1,13 @@
 'use strict';
 
-function calcAnglesFromPercent(percents, start=0) {
+function calcAnglesFromPercent(percents, startAngle=0) {
   const onePercentAngle = Math.PI / 50;
 
-  let retVal = [onePercentAngle * percents[0] + start];
-  for (let i = 1; i < percents.length; i++) {
-    retVal.push(retVal[i - 1] + onePercentAngle * percents[i]);
+  let retVal = [startAngle];
+  for (let i = 0; i < percents.length; i++) {
+    retVal.push(retVal[i] + onePercentAngle * percents[i]);
   }
-  retVal.push(start);
+  retVal.push(startAngle);
 
   return retVal;
 }
