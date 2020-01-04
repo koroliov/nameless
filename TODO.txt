@@ -1,5 +1,8 @@
-- set up unit tests
-- set up unit build
+- set up unit tests with canvas
+  - install codeceptjs
+  - make a module
+  - browserify the module
+  - test the browserified module
 - create the pie chart
   - create a round pie
   - scale the pie
