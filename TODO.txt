@@ -1,8 +1,5 @@
+- set up canvas workflow not in a browser but with node canvas
 - set up unit tests with canvas
-  - install codeceptjs
-  - make a module
-  - browserify the module
-  - test the browserified module
 - create the pie chart
   - create a round pie
   - scale the pie
