@@ -4,58 +4,40 @@ const tp = require('tape');
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 
+let writePngFileFromBase64;
+let writeFileSyncFake;
+let bufferRetVal = Symbol('bufferRetVal');
+let bufferMock;
+let fileName;
+const base64NoPrefix = 'fOo==';
+const base64Full = 'data:image/png;base64,' + base64NoPrefix;
+
 tp('should work with basenames', t => {
-  const wfsFake = sinon.fake();
-  const {writePngFileFromBase64} = proxyquire('./utils.js', {
-    'fs': {
-      writeFileSync: wfsFake,
-      '@noCallThrough': true,
-    },
-  });
-  const bufferRetVal = Symbol('bufferRetVal');
-  const bufferMock = {
-    from: sinon.stub().returns(bufferRetVal),
-  };
-  const fileName = 'foo.png';
-  const base64NoPrefix = 'fOo==';
-  const base64Full = 'data:image/png;base64,' + base64NoPrefix;
-
+  setUp('foo.png');
   writePngFileFromBase64(bufferMock, fileName, base64Full);
-
-  t.equal(bufferMock.from.callCount, 1);
-  const bufferFromCall = bufferMock.from.getCall(0);
-  const bufferFromCallArgs = bufferFromCall.args;
-  t.equal(bufferFromCallArgs.length, 2);
-  t.equal(bufferFromCallArgs[0], base64NoPrefix);
-  t.equal(bufferFromCall.thisValue, bufferMock,
-    'buffer should not be called with new');
-
-  t.equal(wfsFake.callCount, 1);
-  const wfsArgs = wfsFake.getCall(0).args;
-  t.equal(wfsArgs.length, 2);
-  t.equal(wfsArgs[0], fileName);
-  t.equal(wfsArgs[1], bufferRetVal);
-  t.end();
+  check(t, fileName);
 });
 
 tp('should work with full path names', t => {
-  const wfsFake = sinon.fake();
-  const {writePngFileFromBase64} = proxyquire('./utils.js', {
+  setUp('.././../foo.png');
+  writePngFileFromBase64(bufferMock, fileName, base64Full);
+  check(t, fileName);
+});
+
+function setUp(fileName) {
+  writeFileSyncFake = sinon.fake();
+  ({writePngFileFromBase64} = proxyquire('./utils.js', {
     'fs': {
-      writeFileSync: wfsFake,
+      writeFileSync: writeFileSyncFake,
       '@noCallThrough': true,
     },
-  });
-  const bufferRetVal = Symbol('bufferRetVal');
-  const bufferMock = {
+  }));
+  bufferMock = {
     from: sinon.stub().returns(bufferRetVal),
   };
-  const fileName = '.././../foo.png';
-  const base64NoPrefix = 'fOo==';
-  const base64Full = 'data:image/png;base64,' + base64NoPrefix;
+}
 
-  writePngFileFromBase64(bufferMock, fileName, base64Full);
-
+function check(t, fileName) {
   t.equal(bufferMock.from.callCount, 1);
   const bufferFromCall = bufferMock.from.getCall(0);
   const bufferFromCallArgs = bufferFromCall.args;
@@ -64,10 +46,10 @@ tp('should work with full path names', t => {
   t.equal(bufferFromCall.thisValue, bufferMock,
     'buffer should not be called with new');
 
-  t.equal(wfsFake.callCount, 1);
-  const wfsArgs = wfsFake.getCall(0).args;
+  t.equal(writeFileSyncFake.callCount, 1);
+  const wfsArgs = writeFileSyncFake.getCall(0).args;
   t.equal(wfsArgs.length, 2);
   t.equal(wfsArgs[0], fileName);
   t.equal(wfsArgs[1], bufferRetVal);
   t.end();
-});
+}
