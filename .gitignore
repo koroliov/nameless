@@ -1,4 +1,6 @@
 node_modules
+current/browser.js
+current/module-node.js
 tools/*
 !tools/list.txt
 !tools/command-examples.txt

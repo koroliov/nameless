@@ -1,4 +1,3 @@
-- set up canvas workflow not in a browser but with node canvas
 - set up unit tests with canvas
 - create the pie chart
   - create a round pie
