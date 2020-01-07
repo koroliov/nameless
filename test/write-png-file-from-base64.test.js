@@ -26,7 +26,7 @@ tp('should work with full path names', t => {
 
 function setUp(fileName) {
   writeFileSyncFake = sinon.fake();
-  ({writePngFileFromBase64} = proxyquire('./utils.js', {
+  ({writePngFileFromBase64} = proxyquire('../utils.js', {
     'fs': {
       writeFileSync: writeFileSyncFake,
       '@noCallThrough': true,
