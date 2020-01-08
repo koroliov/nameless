@@ -7,4 +7,4 @@ function writePngFileFromBase64(globalBuffClass, fileName, base64str) {
   fs.writeFileSync(fileName, buf);
 }
 
-exports.writePngFileFromBase64 = writePngFileFromBase64;
+module.exports = writePngFileFromBase64;

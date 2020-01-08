@@ -26,12 +26,12 @@ tp('should work with full path names', t => {
 
 function setUp(fileName) {
   writeFileSyncFake = sinon.fake();
-  ({writePngFileFromBase64} = proxyquire('write-png-file-from-base-64', {
+  writePngFileFromBase64 = proxyquire('write-png-file-from-base-64', {
     'fs': {
       writeFileSync: writeFileSyncFake,
       '@noCallThrough': true,
     },
-  }));
+  });
   bufferMock = {
     from: sinon.stub().returns(bufferRetVal),
   };
