@@ -2,13 +2,18 @@
 
 function calcAnglesFromPercent(percents, startAngle=0) {
   const onePercentAngle = Math.PI / 50;
+  const angles = [startAngle];
+  let totalPercents = 0;
 
-  let retVal = [startAngle];
   for (let i = 0; i < percents.length; i++) {
-    retVal.push(retVal[i] + onePercentAngle * percents[i]);
+    totalPercents += percents[i];
+    angles.push(angles[i] + onePercentAngle * percents[i]);
   }
-  retVal.push(startAngle);
+  angles.push(startAngle);
 
+  const retVal = Object.create(null);
+  retVal.error = totalPercents >= 100 ? 1 : 0;
+  retVal.angles = angles;
   return retVal;
 }
 
