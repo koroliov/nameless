@@ -5,69 +5,27 @@ const calcAnglesFromPercent = require('calc-angles-from-percent');
 const onePercentAngle = Math.PI / 50;
 
 tp('works with a -0 start angle', t => {
-  const percents = [25, 39];
-  const startAngle = -0;
-
-  t.deepEqual(
-    calcAnglesFromPercent(percents, startAngle),
-    getExpectedRetVal(percents, startAngle)
-  );
-  t.end();
+  checkNormal(t, [25, 39], -0,);
 });
 
 tp('works with a positive start angle', t => {
-  const percents = [25, 39];
-  const startAngle = 0.5;
-
-  t.deepEqual(
-    calcAnglesFromPercent(percents, startAngle),
-    getExpectedRetVal(percents, startAngle)
-  );
-  t.end();
+  checkNormal(t, [25, 39], 0.5,);
 });
 
 tp('works with a negative start angle', t => {
-  const percents = [25, 39];
-  const startAngle = -0.5;
-
-  t.deepEqual(
-    calcAnglesFromPercent(percents, startAngle),
-    getExpectedRetVal(percents, startAngle)
-  );
-  t.end();
+  checkNormal(t, [25, 39], -0.5,);
 });
 
 tp('default start angle is 0', t => {
-  const percents = [25, 39];
-  const startAngle = 0;
-
-  t.deepEqual(
-    calcAnglesFromPercent(percents, startAngle),
-    getExpectedRetVal(percents, startAngle)
-  );
-  t.end();
+  checkNormal(t, [25, 39], 0,);
 });
 
 tp('works if subsequent percent vals are smaller', t => {
-  const percents = [25, 3];
-  const startAngle = 0;
-
-  t.deepEqual(
-    calcAnglesFromPercent(percents, startAngle),
-    getExpectedRetVal(percents, startAngle)
-  );
-  t.end();
+  checkNormal(t, [25, 3], 0,);
 });
 
 tp('works with float percent vals', t => {
-  const percents = [25.0, 3.197];
-  const startAngle = 0;
-
-  t.deepEqual(
-    calcAnglesFromPercent(percents, startAngle),
-    getExpectedRetVal(percents, startAngle)
-  );
-  t.end();
+  checkNormal(t, [25.0, 3.197], 0,);
 });
 
 tp('returns an error, if >100 percent passed', t => {
@@ -81,6 +39,14 @@ tp('returns an error, if 100 percent passed', t => {
 function checkErrors(t, moduleRetVal, errorCode) {
   t.equal(Object.getPrototypeOf(moduleRetVal), null);
   t.equal(moduleRetVal.error, errorCode);
+  t.end();
+}
+
+function checkNormal(t, percents, startAngle) {
+  t.deepEqual(
+    calcAnglesFromPercent(percents, startAngle),
+    getExpectedRetVal(percents, startAngle)
+  );
   t.end();
 }
 
