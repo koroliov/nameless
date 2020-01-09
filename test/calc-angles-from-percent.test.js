@@ -4,28 +4,73 @@ const tp = require('tape');
 const calcAnglesFromPercent = require('calc-angles-from-percent');
 const onePercentAngle = Math.PI / 50;
 
+tp('works with a 0 start angle', t => {
+  const percents = [25, 39,];
+  const startAngle = 0;
+  t.deepEqual(
+    calcAnglesFromPercent({percents, startAngle}),
+    getExpectedRetVal(percents, startAngle)
+  );
+  t.end();
+});
+
 tp('works with a -0 start angle', t => {
-  checkNormal(t, [25, 39], -0);
+  const percents = [25, 39,];
+  const startAngle = -0;
+  t.deepEqual(
+    calcAnglesFromPercent({percents, startAngle}),
+    getExpectedRetVal(percents, startAngle)
+  );
+  t.end();
 });
 
 tp('works with a positive start angle', t => {
-  checkNormal(t, [25, 39], 0.5);
+  const percents = [25, 39,];
+  const startAngle = 0.5;
+  t.deepEqual(
+    calcAnglesFromPercent({percents, startAngle}),
+    getExpectedRetVal(percents, startAngle)
+  );
+  t.end();
 });
 
 tp('works with a negative start angle', t => {
-  checkNormal(t, [25, 39], -0.5);
-});
-
-tp('default start angle is 0', t => {
-  checkNormal(t, [25, 39], 0);
+  const percents = [25, 39,];
+  const startAngle = -0.5;
+  t.deepEqual(
+    calcAnglesFromPercent({percents, startAngle}),
+    getExpectedRetVal(percents, startAngle)
+  );
+  t.end();
 });
 
 tp('works if subsequent percent vals are smaller', t => {
-  checkNormal(t, [25, 3], 0);
+  const percents = [25, 3,];
+  const startAngle = 0.5;
+  t.deepEqual(
+    calcAnglesFromPercent({percents, startAngle}),
+    getExpectedRetVal(percents, startAngle)
+  );
+  t.end();
 });
 
 tp('works with float percent vals', t => {
-  checkNormal(t, [25.0, 3.197], 0);
+  const percents = [25.0, 3.197,];
+  const startAngle = 0.5;
+  t.deepEqual(
+    calcAnglesFromPercent({percents, startAngle}),
+    getExpectedRetVal(percents, startAngle)
+  );
+  t.end();
+});
+
+tp('default start angle is 0', t => {
+  const percents = [25, 39,];
+  t.deepEqual(
+    calcAnglesFromPercent({percents,}),
+    getExpectedRetVal(percents, 0)
+  );
+  t.end();
 });
 
 tp('returns an error, if >100 percent passed', t => {
@@ -40,14 +85,6 @@ function checkErrors(t, percents, errorCode) {
   const moduleRetVal = calcAnglesFromPercent({percents,});
   t.equal(Object.getPrototypeOf(moduleRetVal), null);
   t.equal(moduleRetVal.error, errorCode);
-  t.end();
-}
-
-function checkNormal(t, percents, startAngle) {
-  t.deepEqual(
-    calcAnglesFromPercent({percents, startAngle}),
-    getExpectedRetVal(percents, startAngle)
-  );
   t.end();
 }
 
