@@ -3,13 +3,21 @@
 function calcAnglesFromPercent(args) {
   const percents = args.percents;
   const startAngle = args.hasOwnProperty('startAngle') ? args.startAngle : 0;
+  const clockwise = args.hasOwnProperty('clockwise') ? args.clockwise : true;
   const onePercentAngle = Math.PI / 50;
   const angles = [startAngle];
   let totalPercents = 0;
 
-  for (let i = 0; i < percents.length; i++) {
-    totalPercents += percents[i];
-    angles.push(angles[i] + onePercentAngle * percents[i]);
+  if (clockwise) {
+    for (let i = 0; i < percents.length; i++) {
+      totalPercents += percents[i];
+      angles.push(angles[i] + onePercentAngle * percents[i]);
+    }
+  } else {
+    for (let i = 0; i < percents.length; i++) {
+      totalPercents += percents[i];
+      angles.push(angles[i] - onePercentAngle * percents[i]);
+    }
   }
   angles.push(startAngle);
 
