@@ -1,7 +1,5 @@
-- set up unit tests with canvas
 - create the pie chart
-  - create a round pie
-  - scale the pie
-  - rotate the pie
-  - skew the pie
-  - add a rectangular legend
+  - draw the charted base
+  - calc chart points on the rim
+  - draw the rim
+  - wrap everything in a module
