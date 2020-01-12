@@ -1,6 +1,6 @@
 'use strict';
 
-function calcAnglesFromPercent(args) {
+function calcAnglesFromPercents(args) {
   const percents = args.percents;
   const startAngle = args.hasOwnProperty('startAngle') ? args.startAngle : 0;
   const clockwise = args.hasOwnProperty('clockwise') ? args.clockwise : true;
@@ -27,4 +27,4 @@ function calcAnglesFromPercent(args) {
   return retVal;
 }
 
-module.exports = calcAnglesFromPercent;
+module.exports = calcAnglesFromPercents;
