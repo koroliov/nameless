@@ -30,22 +30,30 @@ tp('works with float percent vals', t => {
 });
 
 function testDefaultArgumentValues() {
-  tp('default start angle is 0', t => {
+  tp('default start angle is 0, even if Object.protytype has one', t => {
     const percents = [25, 39,];
+    Object.prototype.startAngle = 1;
+
     t.deepEqual(
       calcAnglesFromPercents({percents, counterClockwise: false}),
       getExpectedRetValClockwise(percents, 0)
     );
+
+    delete Object.prototype.startAngle;
     t.end();
   });
 
-  tp('default counterClockwise is false', t => {
+  tp('default counterClockwise false, even if Object.protytype has one', t => {
     const percents = [25, 39,];
     const startAngle = 0.5;
-      t.deepEqual(
-        calcAnglesFromPercents({percents, startAngle,}),
-        getExpectedRetValClockwise(percents, startAngle)
-      );
+    Object.prototype.counterClockwise = true;
+
+    t.deepEqual(
+      calcAnglesFromPercents({percents, startAngle,}),
+      getExpectedRetValClockwise(percents, startAngle)
+    );
+
+    delete Object.prototype.counterClockwise;
     t.end();
   });
 }
