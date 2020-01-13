@@ -41,11 +41,11 @@ function testDefaultArgumentValues() {
 
   tp('default is clockwise', t => {
     const percents = [25, 39,];
-  const startAngle = 0.5;
-    t.deepEqual(
-      calcAnglesFromPercents({percents, startAngle,}),
-      getExpectedRetValClockwise(percents, startAngle)
-    );
+    const startAngle = 0.5;
+      t.deepEqual(
+        calcAnglesFromPercents({percents, startAngle,}),
+        getExpectedRetValClockwise(percents, startAngle)
+      );
     t.end();
   });
 }
