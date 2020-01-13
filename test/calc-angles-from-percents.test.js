@@ -146,30 +146,27 @@ function testCounterClockwise() {
 function checkErrors(t, percents, errorCode) {
   const moduleRetVal =
     calcAnglesFromPercents({percents, startAngle: 0, clockwise: true,});
-  t.equal(moduleRetVal.get('error'), errorCode);
+  t.equal(Object.getPrototypeOf(moduleRetVal), null);
+  t.equal(moduleRetVal.error, errorCode);
   t.end();
 }
 
 function getExpectedRetValClockwise(percents, startAngle) {
-  const expected = new Map([
-    ['error', 0],
-  ]);
-  const angles = [startAngle];
-  angles[1] = onePercentAngle * percents[0] + startAngle;
-  angles[2] = angles[1] + onePercentAngle * percents[1];
-  angles[3] = startAngle;
-  expected.set('angles', angles);
+  const expected = Object.create(null);
+  expected.error = 0;
+  expected.angles = [startAngle];
+  expected.angles[1] = onePercentAngle * percents[0] + startAngle;
+  expected.angles[2] = expected.angles[1] + onePercentAngle * percents[1];
+  expected.angles[3] = startAngle;
   return expected;
 }
 
 function getExpectedRetValCounterClockwise(percents, startAngle) {
-  const expected = new Map([
-    ['error', 0],
-  ]);
-  const angles = [startAngle];
-  angles[1] = startAngle - onePercentAngle * percents[0];
-  angles[2] = angles[1] - onePercentAngle * percents[1];
-  angles[3] = startAngle;
-  expected.set('angles', angles);
+  const expected = Object.create(null);
+  expected.error = 0;
+  expected.angles = [startAngle];
+  expected.angles[1] = startAngle - onePercentAngle * percents[0];
+  expected.angles[2] = expected.angles[1] - onePercentAngle * percents[1];
+  expected.angles[3] = startAngle;
   return expected;
 }

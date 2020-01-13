@@ -21,10 +21,9 @@ function calcAnglesFromPercents(args) {
   }
   angles.push(startAngle);
 
-  const retVal = new Map([
-    ['error', totalPercents >= 100 ? 1 : 0],
-  ]);
-  retVal.set('angles', angles);
+  const retVal = Object.create(null);
+  retVal.error = totalPercents >= 100 ? 1 : 0;
+  retVal.angles = angles;
   return retVal;
 }
 
