@@ -13,7 +13,6 @@ function drawPieBase(args) {
     cntx.closePath();
     cntx.fillStyle = colors[i - 1];
     cntx.fill();
-    cntx.stroke();
   }
   cntx.fillStyle = originalFillStyle;
 }
