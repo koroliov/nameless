@@ -83,9 +83,10 @@ function drawAndReturnItemsToTest(originalFillStyle, colors, angles,
 let fileCounterForSorting = 0;
 function writePngs(descriptivePartOfPngName, actualBase64, expectedBase64) {
   const wPngFileFromBase64 = require('dev-utils/write-png-file-from-base-64');
-  const actualFilePath = './png-test-output/' + ++fileCounterForSorting +
+  fileCounterForSorting++;
+  const actualFilePath = './png-test-output/' + fileCounterForSorting +
     '-' + descriptivePartOfPngName + '-actual.png';
-  const expectedFilePath = './png-test-output/' + ++fileCounterForSorting +
+  const expectedFilePath = './png-test-output/' + fileCounterForSorting +
     '-' + descriptivePartOfPngName + '-expected.png';
   wPngFileFromBase64(Buffer, actualFilePath, actualBase64);
   wPngFileFromBase64(Buffer, expectedFilePath, expectedBase64);
