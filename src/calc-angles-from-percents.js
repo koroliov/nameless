@@ -5,6 +5,7 @@ function calcAnglesFromPercents(args) {
   const startAngle = args.hasOwnProperty('startAngle') ? args.startAngle : 0;
   const counterClockwise =
     args.hasOwnProperty('counterClockwise') ? args.counterClockwise : false;
+
   const onePercentAngle = Math.PI / 50;
   const angles = [startAngle];
   let totalPercents = 0;
