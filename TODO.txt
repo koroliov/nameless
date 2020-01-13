@@ -1,5 +1,2 @@
 - create the pie chart
-  - draw the charted base
-  - calc chart points on the rim
-  - draw the rim
-  - wrap everything in a module
+- implement html/css-like markup
