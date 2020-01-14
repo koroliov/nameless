@@ -1,5 +1,7 @@
 'use strict';
 
-const calcAnglesFromPercent = require('./calc-angles-from-percent.js');
+const calcAnglesFromPercents = require('./calc-angles-from-percents.js');
+window.calcAnglesFromPercents = calcAnglesFromPercents;
 
-window.calcAnglesFromPercent = calcAnglesFromPercent;
+const drawPieBase = require('./draw-pie-base.js');
+window.drawPieBase = drawPieBase;

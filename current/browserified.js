@@ -1,25 +1,67 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 'use strict';
 
-function calcAnglesFromPercent(percents, startAngle=0) {
+function calcAnglesFromPercents(args) {
+  const percents = args.percents;
+  const startAngle = args.hasOwnProperty('startAngle') ? args.startAngle : 0;
+  const counterClockwise =
+    args.hasOwnProperty('counterClockwise') ? args.counterClockwise : false;
+
   const onePercentAngle = Math.PI / 50;
+  const angles = [startAngle];
+  let totalPercents = 0;
 
-  let retVal = [startAngle];
-  for (let i = 0; i < percents.length; i++) {
-    retVal.push(retVal[i] + onePercentAngle * percents[i]);
+  if (counterClockwise) {
+    for (let i = 0; i < percents.length; i++) {
+      totalPercents += percents[i];
+      angles.push(angles[i] - onePercentAngle * percents[i]);
+    }
+  } else {
+    for (let i = 0; i < percents.length; i++) {
+      totalPercents += percents[i];
+      angles.push(angles[i] + onePercentAngle * percents[i]);
+    }
   }
-  retVal.push(startAngle);
+  angles.push(startAngle);
 
+  const retVal = Object.create(null);
+  retVal.error = totalPercents >= 100 ? 1 : 0;
+  retVal.angles = angles;
   return retVal;
 }
 
-module.exports = calcAnglesFromPercent;
+module.exports = calcAnglesFromPercents;
 
 },{}],2:[function(require,module,exports){
 'use strict';
 
-const calcAnglesFromPercent = require('./calc-angles-from-percent.js');
+function drawPieBase(args) {
+  const {ox, oy, radius, cntx, angles, colors} = args;
+  const counterClockwise = args.hasOwnProperty('counterClockwise') ?
+    args.counterClockwise : false;
 
-window.calcAnglesFromPercent = calcAnglesFromPercent;
+  const originalFillStyle = cntx.fillStyle;
+  for (let i = 1; i < angles.length; i++) {
+    cntx.beginPath();
+    cntx.arc(ox, oy, radius, angles[i - 1], angles[i], counterClockwise);
+    cntx.lineTo(ox, oy);
+    cntx.stroke();
+    cntx.closePath();
+    cntx.fillStyle = colors[i - 1];
+    cntx.fill();
+  }
+  cntx.fillStyle = originalFillStyle;
+}
 
-},{"./calc-angles-from-percent.js":1}]},{},[2]);
+module.exports = drawPieBase;
+
+},{}],3:[function(require,module,exports){
+'use strict';
+
+const calcAnglesFromPercents = require('./calc-angles-from-percents.js');
+const drawPieBase = require('./draw-pie-base.js');
+
+window.calcAnglesFromPercents = calcAnglesFromPercents;
+window.drawPieBase = drawPieBase;
+
+},{"./calc-angles-from-percents.js":1,"./draw-pie-base.js":2}]},{},[3]);
