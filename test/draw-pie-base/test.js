@@ -59,6 +59,7 @@ function drawAndReturnItemsToTest(originalFillStyle, colors, angles,
   const cntx = canvas.getContext('2d');
   cntx.fillStyle = originalFillStyle;
   cntx.fillRect(0, 0, canvWidth, canvHeight);
+  cntx.lineWidth = 1;
   cntx.strokeStyle = '#000000';
 
   const argument = {

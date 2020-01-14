@@ -10,6 +10,7 @@ function drawPieBase(args) {
     cntx.beginPath();
     cntx.arc(ox, oy, radius, angles[i - 1], angles[i], counterClockwise);
     cntx.lineTo(ox, oy);
+    cntx.stroke();
     cntx.closePath();
     cntx.fillStyle = colors[i - 1];
     cntx.fill();
