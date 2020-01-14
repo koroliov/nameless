@@ -5,36 +5,32 @@ const {createCanvas} = require('canvas');
 const drawPieBase = require('draw-pie-base');
 
 tp('draws a charted circle filled with colors, clockwise', t => {
+  t.plan(2);
   const originalFillStyle = '#ffffff';
   const {currentFillStyle, actualBase64} = drawAndReturnItemsToTest(
     originalFillStyle, ['#11ab12', '#e22929', '#113fda'],
     [0, 1, 3, 0], false);
   const expectedBase64 = require('./expected-clockwise-base64.js');
 
-  if (expectedBase64 !== actualBase64) {
-    writePngs('clockwise', actualBase64, expectedBase64);
-    t.fail();
-  }
+  t.equal(expectedBase64 === actualBase64, true);
   t.equal(currentFillStyle, originalFillStyle);
-  t.end();
 });
 
 tp('draws a charted circle filled with colors, counter-clockwise', t => {
+  t.plan(2);
   const originalFillStyle = '#ffffff';
   const {currentFillStyle, actualBase64} = drawAndReturnItemsToTest(
     originalFillStyle, ['#11ab12', '#e22929', '#113fda'],
     [0, -1, -3, 0], true);
   const expectedBase64 = require('./expected-counter-clockwise-base64.js');
 
-  if (expectedBase64 !== actualBase64) {
-    writePngs('counterclockwise', actualBase64, expectedBase64);
-    t.fail();
-  }
+  t.equal(expectedBase64 === actualBase64, true);
   t.equal(currentFillStyle, originalFillStyle);
   t.end();
 });
 
 tp('default counterClockwise is false', t => {
+  t.plan(2);
   Object.prototype.counterClockwise = true;
   const originalFillStyle = '#ffffff';
   const {currentFillStyle, actualBase64} = drawAndReturnItemsToTest(
@@ -43,10 +39,7 @@ tp('default counterClockwise is false', t => {
   const expectedBase64 = require('./expected-clockwise-base64.js');
   delete Object.prototype.counterClockwise;
 
-  if (actualBase64 !== expectedBase64) {
-    writePngs('counterclockwise-default', actualBase64, expectedBase64);
-    t.fail();
-  }
+  t.equal(expectedBase64 === actualBase64, true);
   t.equal(currentFillStyle, originalFillStyle);
   t.end();
 });

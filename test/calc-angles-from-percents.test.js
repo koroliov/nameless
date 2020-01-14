@@ -10,27 +10,28 @@ testDefaultArgumentValues();
 testErrors();
 
 tp('works if subsequent percent vals are smaller', t => {
+  t.plan(1);
   const percents = [25, 3,];
   const startAngle = 0.5;
   t.deepEqual(
     calcAnglesFromPercents({percents, startAngle, counterClockwise: false,}),
     getExpectedRetValClockwise(percents, startAngle)
   );
-  t.end();
 });
 
 tp('works with float percent vals', t => {
+  t.plan(1);
   const percents = [25.0, 3.197,];
   const startAngle = 0.5;
   t.deepEqual(
     calcAnglesFromPercents({percents, startAngle, counterClockwise: false,}),
     getExpectedRetValClockwise(percents, startAngle)
   );
-  t.end();
 });
 
 function testDefaultArgumentValues() {
   tp('default start angle is 0, even if Object.protytype has one', t => {
+    t.plan(1);
     const percents = [25, 39,];
     Object.prototype.startAngle = 1;
 
@@ -40,10 +41,10 @@ function testDefaultArgumentValues() {
     );
 
     delete Object.prototype.startAngle;
-    t.end();
   });
 
   tp('default counterClockwise false, even if Object.protytype has one', t => {
+    t.plan(1);
     const percents = [25, 39,];
     const startAngle = 0.5;
     Object.prototype.counterClockwise = true;
@@ -54,100 +55,101 @@ function testDefaultArgumentValues() {
     );
 
     delete Object.prototype.counterClockwise;
-    t.end();
   });
 }
 function testErrors() {
   tp('returns an error, if >100 percent passed', t => {
+    t.plan(2);
     checkErrors(t, [25, 100,], 1);
   });
 
   tp('returns an error, if 100 percent passed', t => {
+    t.plan(2);
     checkErrors(t, [25, 75,], 1);
   });
 }
 
 function testClockwise() {
   tp('works with a 0 start angle clockwise', t => {
+    t.plan(1);
     const percents = [25, 39,];
     const startAngle = 0;
     t.deepEqual(
       calcAnglesFromPercents({percents, startAngle, counterClockwise: false}),
       getExpectedRetValClockwise(percents, startAngle)
     );
-    t.end();
   });
 
   tp('works with a -0 start angle clockwise', t => {
+    t.plan(1);
     const percents = [25, 39,];
     const startAngle = -0;
     t.deepEqual(
       calcAnglesFromPercents({percents, startAngle, counterClockwise: false}),
       getExpectedRetValClockwise(percents, startAngle)
     );
-    t.end();
   });
 
   tp('works with a positive start angle clockwise', t => {
+    t.plan(1);
     const percents = [25, 39,];
     const startAngle = 0.5;
     t.deepEqual(
       calcAnglesFromPercents({percents, startAngle, counterClockwise: false}),
       getExpectedRetValClockwise(percents, startAngle)
     );
-    t.end();
   });
 
   tp('works with a negative start angle clockwise', t => {
+    t.plan(1);
     const percents = [25, 39,];
     const startAngle = -0.5;
     t.deepEqual(
       calcAnglesFromPercents({percents, startAngle, counterClockwise: false}),
       getExpectedRetValClockwise(percents, startAngle)
     );
-    t.end();
   });
 }
 
 function testCounterClockwise() {
   tp('works with a 0 start angle counter-clockwise', t => {
+    t.plan(1);
     const percents = [25, 39,];
     const startAngle = 0;
     t.deepEqual(
       calcAnglesFromPercents({percents, startAngle, counterClockwise: true,}),
       getExpectedRetValCounterClockwise(percents, startAngle)
     );
-    t.end();
   });
 
   tp('works with a -0 start angle counter-clockwise', t => {
+    t.plan(1);
     const percents = [25, 39,];
     const startAngle = -0;
     t.deepEqual(
       calcAnglesFromPercents({percents, startAngle, counterClockwise: true,}),
       getExpectedRetValCounterClockwise(percents, startAngle)
     );
-    t.end();
   });
 
   tp('works with a positive start angle counter-clockwise', t => {
+    t.plan(1);
     const percents = [25, 39,];
     const startAngle = 0.5;
     t.deepEqual(
       calcAnglesFromPercents({percents, startAngle, counterClockwise: true,}),
       getExpectedRetValCounterClockwise(percents, startAngle)
     );
-    t.end();
   });
 
   tp('works with a negative start angle counter-clockwise', t => {
+    t.plan(1);
     const percents = [25, 39,];
     const startAngle = -0.5;
     t.deepEqual(
       calcAnglesFromPercents({percents, startAngle, counterClockwise: true,}),
       getExpectedRetValCounterClockwise(percents, startAngle)
     );
-    t.end();
   });
 }
 
@@ -156,7 +158,6 @@ function checkErrors(t, percents, errorCode) {
     calcAnglesFromPercents({percents, startAngle: 0, counterClockwise: true,});
   t.equal(Object.getPrototypeOf(moduleRetVal), null);
   t.equal(moduleRetVal.error, errorCode);
-  t.end();
 }
 
 function getExpectedRetValClockwise(percents, startAngle) {

@@ -13,12 +13,14 @@ const base64NoPrefix = 'fOo==';
 const base64Full = 'data:image/png;base64,' + base64NoPrefix;
 
 tp('should work with basenames', t => {
+  t.plan(8);
   setUp('foo.png');
   writePngFileFromBase64(bufferMock, fileName, base64Full);
   check(t, fileName);
 });
 
 tp('should work with full path names', t => {
+  t.plan(8);
   setUp('.././../foo.png');
   writePngFileFromBase64(bufferMock, fileName, base64Full);
   check(t, fileName);
@@ -51,5 +53,4 @@ function check(t, fileName) {
   t.equal(wfsArgs.length, 2);
   t.equal(wfsArgs[0], fileName);
   t.equal(wfsArgs[1], bufferRetVal);
-  t.end();
 }
