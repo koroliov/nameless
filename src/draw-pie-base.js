@@ -1,10 +1,6 @@
 'use strict';
 
-function drawPieBase(args) {
-  const {ox, oy, radius, cntx, angles, colors} = args;
-  const counterClockwise = args.hasOwnProperty('counterClockwise') ?
-    args.counterClockwise : false;
-
+function drawPieBase({ox, oy, radius, cntx, angles, colors, counterClockwise}) {
   const originalFillStyle = cntx.fillStyle;
   for (let i = 1; i < angles.length; i++) {
     cntx.beginPath();

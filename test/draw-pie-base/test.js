@@ -29,21 +29,6 @@ tp('draws a charted circle filled with colors, counter-clockwise', t => {
   t.end();
 });
 
-tp('default counterClockwise is false', t => {
-  t.plan(2);
-  Object.prototype.counterClockwise = true;
-  const originalFillStyle = '#ffffff';
-  const {currentFillStyle, actualBase64} = drawAndReturnItemsToTest(
-    originalFillStyle, ['#11ab12', '#e22929', '#113fda'],
-    [0, 1, 3, 0], null);
-  const expectedBase64 = require('./expected-clockwise-base64.js');
-  delete Object.prototype.counterClockwise;
-
-  t.equal(actualBase64 === expectedBase64, true);
-  t.equal(currentFillStyle, originalFillStyle);
-  t.end();
-});
-
 function drawAndReturnItemsToTest(originalFillStyle, colors, angles,
   counterClockwise) {
   const canvWidth = 400;

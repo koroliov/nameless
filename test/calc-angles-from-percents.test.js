@@ -6,7 +6,6 @@ const onePercentAngle = Math.PI / 50;
 
 testCounterClockwise();
 testClockwise();
-testDefaultArgumentValues();
 testErrors();
 
 tp('works if subsequent percent vals are smaller', t => {
@@ -29,34 +28,6 @@ tp('works with float percent vals', t => {
   );
 });
 
-function testDefaultArgumentValues() {
-  tp('default start angle is 0, even if Object.protytype has one', t => {
-    t.plan(1);
-    const percents = [25, 39,];
-    Object.prototype.startAngle = 1;
-
-    t.deepEqual(
-      calcAnglesFromPercents({percents, counterClockwise: false}),
-      getExpectedRetValClockwise(percents, 0)
-    );
-
-    delete Object.prototype.startAngle;
-  });
-
-  tp('default counterClockwise false, even if Object.protytype has one', t => {
-    t.plan(1);
-    const percents = [25, 39,];
-    const startAngle = 0.5;
-    Object.prototype.counterClockwise = true;
-
-    t.deepEqual(
-      calcAnglesFromPercents({percents, startAngle,}),
-      getExpectedRetValClockwise(percents, startAngle)
-    );
-
-    delete Object.prototype.counterClockwise;
-  });
-}
 function testErrors() {
   tp('returns an error, if >100 percent passed', t => {
     t.plan(2);
