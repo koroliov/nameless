@@ -12,7 +12,7 @@ tp('draws a charted circle filled with colors, clockwise', t => {
     [0, 1, 3, 0], false);
   const expectedBase64 = require('./expected-clockwise-base64.js');
 
-  t.equal(expectedBase64 === actualBase64, true);
+  t.equal(actualBase64 === expectedBase64, true);
   t.equal(currentFillStyle, originalFillStyle);
 });
 
@@ -24,7 +24,7 @@ tp('draws a charted circle filled with colors, counter-clockwise', t => {
     [0, -1, -3, 0], true);
   const expectedBase64 = require('./expected-counter-clockwise-base64.js');
 
-  t.equal(expectedBase64 === actualBase64, true);
+  t.equal(actualBase64 === expectedBase64, true);
   t.equal(currentFillStyle, originalFillStyle);
   t.end();
 });
@@ -39,7 +39,7 @@ tp('default counterClockwise is false', t => {
   const expectedBase64 = require('./expected-clockwise-base64.js');
   delete Object.prototype.counterClockwise;
 
-  t.equal(expectedBase64 === actualBase64, true);
+  t.equal(actualBase64 === expectedBase64, true);
   t.equal(currentFillStyle, originalFillStyle);
   t.end();
 });
