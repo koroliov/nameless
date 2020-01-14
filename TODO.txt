@@ -1,3 +1,4 @@
+- call t.plan in the tests instead of t.end (which is more reliable)
 - create the pie chart
 - implement html/css-like markup
 - make src/dev-utils/write-png-file-from-base-64.js handle file path on
