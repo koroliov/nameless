@@ -21,7 +21,7 @@ tp('draws a charted circle filled with colors, counter-clockwise', t => {
   const originalFillStyle = '#ffffff';
   const {currentFillStyle, actualBase64} = drawAndReturnItemsToTest(
     originalFillStyle, ['#11ab12', '#e22929', '#113fda'],
-    [0, -1, -3, 0], true);
+    [0, 2 * Math.PI - 1, 2 * Math.PI - 3, 0], true);
   const expectedBase64 = require('./expected-counter-clockwise-base64.js');
 
   t.equal(actualBase64 === expectedBase64, true);
