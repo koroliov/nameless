@@ -9,7 +9,6 @@ function normalizeAngles(angles) {
       angles[i] = angles[i] - twoPi;
     }
   }
-  return angles;
 }
 
 module.exports = normalizeAngles;
