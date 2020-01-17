@@ -4,8 +4,8 @@ const tp = require('tape');
 const normalizeAngles = require('normalize-angles');
 
 tp('angles in (-2Pi, 4Pi) range normalized to [0, 2Pi)', t => {
-  t.plan(1);
-  const actualAngles = [
+  t.plan(2);
+  const angles = [
     0,
     2,
     2 * Math.PI + 1,
@@ -15,7 +15,7 @@ tp('angles in (-2Pi, 4Pi) range normalized to [0, 2Pi)', t => {
     1,
     1,
   ];
-  const expectedAngles = [
+  const expectedNormAngles = [
     0,
     2,
     1,
@@ -25,27 +25,28 @@ tp('angles in (-2Pi, 4Pi) range normalized to [0, 2Pi)', t => {
     1,
     1,
   ];
-  normalizeAngles(actualAngles);
-  t.deepEqual(actualAngles, expectedAngles);
+  const actualNormAngles = normalizeAngles(angles);
+  t.deepEqual(actualNormAngles, expectedNormAngles);
+  t.equal(actualNormAngles, angles);
 });
 
 tp('first and last not touched, since they are startAngle, ' +
   'which must be already in range', t => {
   t.plan(1);
-  const actualAngles = [
+  const angles = [
     -11,
     2,
     -3,
     1,
     11,
   ];
-  const expectedAngles = [
+  const expectedNormAngles = [
     -11,
     2,
     2 * Math.PI - 3,
     1,
     11,
   ];
-  normalizeAngles(actualAngles);
-  t.deepEqual(actualAngles, expectedAngles);
+  const actualNormAngles = normalizeAngles(angles);
+  t.deepEqual(angles, actualNormAngles);
 });
