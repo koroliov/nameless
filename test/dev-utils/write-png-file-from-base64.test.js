@@ -1,7 +1,7 @@
 'use strict';
 
 const tp = require('tape');
-const proxyquire = require('proxyquire');
+const proxyquire = require('proxyquire').noCallThru();
 const sinon = require('sinon');
 
 let writePngFileFromBase64;
@@ -31,7 +31,6 @@ function setUp(fileName) {
   writePngFileFromBase64 = proxyquire('dev-utils/write-png-file-from-base-64', {
     'fs': {
       writeFileSync: writeFileSyncFake,
-      '@noCallThrough': true,
     },
   });
   bufferMock = {
