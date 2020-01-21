@@ -6,10 +6,10 @@ function createRimDrawSequence(args) {
   const {normalizedAngles, colors, isRimDown, counterClockwise} = args;
   const mergedAnglesColors = mergeAnglesColors(normalizedAngles, colors);
   const indOfAngleBehindZero =
-    findIndOfFirstAngleBehindZero(normalizedAngles, isRimDown);
+      findIndOfFirstAngleBehindZero(normalizedAngles, isRimDown);
 
-  const orderedSeq = createOrderedSequenceFromBehind0ToPi(mergedAnglesColors,
-    indOfAngleBehindZero, counterClockwise);
+  const orderedSeq = createOrderedSequenceFromBehind0ToPi(
+      mergedAnglesColors, indOfAngleBehindZero, counterClockwise);
 
   let rimDrawSequence;
   if (isRimDown) {
@@ -56,20 +56,20 @@ function createDrawSeqForRimDown(orderedSeq) {
   return rimDrawSequence;
 }
 
-function createOrderedSequenceFromBehind0ToPi(mergedAnglesColors,
-  indOfAngleBehindZero, counterClockwise) {
+function createOrderedSequenceFromBehind0ToPi(
+    mergedAnglesColors, indOfAngleBehindZero, counterClockwise) {
   const orderedSeq = [];
   if (counterClockwise) {
     for (let i = indOfAngleBehindZero * 2; i > 0; i -= 2) {
       orderedSeq.push(mergedAnglesColors[i], mergedAnglesColors[i - 1]);
     }
     for (let i = mergedAnglesColors.length - 1; i > indOfAngleBehindZero * 2;
-    i -= 2) {
+        i -= 2) {
       orderedSeq.push(mergedAnglesColors[i], mergedAnglesColors[i - 1]);
     }
   } else {
     for (let i = indOfAngleBehindZero * 2; i < mergedAnglesColors.length - 1;
-    i += 2) {
+        i += 2) {
       orderedSeq.push(mergedAnglesColors[i], mergedAnglesColors[i + 1]);
     }
     for (let i = 1; i < indOfAngleBehindZero * 2; i += 2) {
