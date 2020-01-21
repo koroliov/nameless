@@ -9,20 +9,37 @@ function createRimDrawSequence(args) {
 
   const orderedSequence = createOrderedSequence(mergedAnglesColors,
     indOfAngleBehindZero, counterClockwise);
-  const rimDrawSequence = [0, orderedSequence[1]];
+  let rimDrawSequence;
 
-  for (let i = 2; i < orderedSequence.length; i += 2) {
-    if (orderedSequence[i] >= pi) {
-      break;
+  if (isRimDown) {
+    rimDrawSequence = [0, orderedSequence[1]];
+    for (let i = 2; i < orderedSequence.length; i += 2) {
+      if (orderedSequence[i] >= pi) {
+        break;
+      }
+      rimDrawSequence.push(orderedSequence[i], orderedSequence[i + 1]);
     }
-    rimDrawSequence.push(orderedSequence[i], orderedSequence[i + 1]);
-  }
-  if (orderedSequence[0] === 0) {
-    rimDrawSequence.push(pi);
-  } else if (orderedSequence[0] < pi) {
-    rimDrawSequence.push(orderedSequence[0], orderedSequence[1], pi);
+    if (orderedSequence[0] === 0) {
+      rimDrawSequence.push(pi);
+    } else if (orderedSequence[0] < pi) {
+      rimDrawSequence.push(orderedSequence[0], orderedSequence[1], pi);
+    } else {
+      rimDrawSequence.push(pi);
+    }
   } else {
-    rimDrawSequence.push(pi);
+    rimDrawSequence = [0];
+    let i = orderedSequence.length - 1;
+    for (; i > 0; i -= 2) {
+      if (orderedSequence[i - 1] <= pi) {
+        break;
+      }
+      rimDrawSequence.push(orderedSequence[i], orderedSequence[i - 1]);
+    }
+    if (orderedSequence[0] > pi) {
+      rimDrawSequence.push(orderedSequence[orderedSequence.length - 1], pi);
+    } else {
+      rimDrawSequence.push(orderedSequence[i], pi);
+    }
   }
 
   return rimDrawSequence;
