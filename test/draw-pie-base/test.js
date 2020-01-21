@@ -29,7 +29,7 @@ tp('draws a charted circle filled with colors, counter-clockwise', t => {
   t.end();
 });
 
-function drawAndReturnItemsToTest(originalFillStyle, colors, angles,
+function drawAndReturnItemsToTest(originalFillStyle, colors, normalizedAngles,
   counterClockwise) {
   const canvWidth = 400;
   const canvHeight = 300;
@@ -45,7 +45,7 @@ function drawAndReturnItemsToTest(originalFillStyle, colors, angles,
     oy: canvHeight / 2,
     radius: (canvHeight - 100) / 2,
     cntx,
-    angles,
+    normalizedAngles,
     colors,
   };
   if (counterClockwise !== null) {

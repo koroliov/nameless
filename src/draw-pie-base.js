@@ -1,10 +1,13 @@
 'use strict';
 
-function drawPieBase({ox, oy, radius, cntx, angles, colors, counterClockwise}) {
+function drawPieBase(args) {
+  const {ox, oy, radius, cntx, normalizedAngles, colors, counterClockwise} =
+      args;
   const originalFillStyle = cntx.fillStyle;
-  for (let i = 1; i < angles.length; i++) {
+  for (let i = 1; i < normalizedAngles.length; i++) {
     cntx.beginPath();
-    cntx.arc(ox, oy, radius, angles[i - 1], angles[i], counterClockwise);
+    cntx.arc(ox, oy, radius, normalizedAngles[i - 1], normalizedAngles[i],
+        counterClockwise);
     cntx.lineTo(ox, oy);
     cntx.stroke();
     cntx.closePath();
