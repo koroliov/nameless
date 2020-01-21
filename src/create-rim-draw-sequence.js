@@ -1,71 +1,82 @@
 'use strict';
 
+const pi = Math.PI;
+
 function createRimDrawSequence(args) {
   const {normalizedAngles, colors, isRimDown, counterClockwise} = args;
-  const pi = Math.PI;
   const mergedAnglesColors = mergeAnglesColors(normalizedAngles, colors);
   const indOfAngleBehindZero =
     findIndOfFirstAngleBehindZero(normalizedAngles, isRimDown);
 
-  const orderedSequence = createOrderedSequence(mergedAnglesColors,
+  const orderedSeq = createOrderedSequenceFromBehind0ToPi(mergedAnglesColors,
     indOfAngleBehindZero, counterClockwise);
-  let rimDrawSequence;
 
+  let rimDrawSequence;
   if (isRimDown) {
-    rimDrawSequence = [0, orderedSequence[1]];
-    for (let i = 2; i < orderedSequence.length; i += 2) {
-      if (orderedSequence[i] >= pi) {
-        break;
-      }
-      rimDrawSequence.push(orderedSequence[i], orderedSequence[i + 1]);
-    }
-    if (orderedSequence[0] === 0) {
-      rimDrawSequence.push(pi);
-    } else if (orderedSequence[0] < pi) {
-      rimDrawSequence.push(orderedSequence[0], orderedSequence[1], pi);
-    } else {
-      rimDrawSequence.push(pi);
-    }
+    rimDrawSequence = createDrawSeqForRimDown(orderedSeq);
   } else {
-    rimDrawSequence = [0];
-    let i = orderedSequence.length - 1;
-    for (; i > 0; i -= 2) {
-      if (orderedSequence[i - 1] <= pi) {
-        break;
-      }
-      rimDrawSequence.push(orderedSequence[i], orderedSequence[i - 1]);
-    }
-    if (orderedSequence[0] > pi) {
-      rimDrawSequence.push(orderedSequence[orderedSequence.length - 1], pi);
-    } else {
-      rimDrawSequence.push(orderedSequence[i], pi);
-    }
+    rimDrawSequence = createDrawSeqForRimUp(orderedSeq);
   }
 
   return rimDrawSequence;
 }
 
-function createOrderedSequence(mergedAnglesColors, indOfAngleBehindZero,
-  counterClockwise) {
-  const orderedSequence = [];
+function createDrawSeqForRimUp(orderedSeq) {
+  const rimDrawSequence = [0];
+  let i = orderedSeq.length - 1;
+  for (; i > 0; i -= 2) {
+    if (orderedSeq[i - 1] <= pi) {
+      break;
+    }
+    rimDrawSequence.push(orderedSeq[i], orderedSeq[i - 1]);
+  }
+  if (orderedSeq[0] > pi) {
+    rimDrawSequence.push(orderedSeq[orderedSeq.length - 1], pi);
+  } else {
+    rimDrawSequence.push(orderedSeq[i], pi);
+  }
+  return rimDrawSequence;
+}
+
+function createDrawSeqForRimDown(orderedSeq) {
+  const rimDrawSequence = [0, orderedSeq[1]];
+  for (let i = 2; i < orderedSeq.length; i += 2) {
+    if (orderedSeq[i] >= pi) {
+      break;
+    }
+    rimDrawSequence.push(orderedSeq[i], orderedSeq[i + 1]);
+  }
+  if (orderedSeq[0] === 0) {
+    rimDrawSequence.push(pi);
+  } else if (orderedSeq[0] < pi) {
+    rimDrawSequence.push(orderedSeq[0], orderedSeq[1], pi);
+  } else {
+    rimDrawSequence.push(pi);
+  }
+  return rimDrawSequence;
+}
+
+function createOrderedSequenceFromBehind0ToPi(mergedAnglesColors,
+  indOfAngleBehindZero, counterClockwise) {
+  const orderedSeq = [];
   if (counterClockwise) {
     for (let i = indOfAngleBehindZero * 2; i > 0; i -= 2) {
-      orderedSequence.push(mergedAnglesColors[i], mergedAnglesColors[i - 1]);
+      orderedSeq.push(mergedAnglesColors[i], mergedAnglesColors[i - 1]);
     }
     for (let i = mergedAnglesColors.length - 1; i > indOfAngleBehindZero * 2;
     i -= 2) {
-      orderedSequence.push(mergedAnglesColors[i], mergedAnglesColors[i - 1]);
+      orderedSeq.push(mergedAnglesColors[i], mergedAnglesColors[i - 1]);
     }
   } else {
     for (let i = indOfAngleBehindZero * 2; i < mergedAnglesColors.length - 1;
     i += 2) {
-      orderedSequence.push(mergedAnglesColors[i], mergedAnglesColors[i + 1]);
+      orderedSeq.push(mergedAnglesColors[i], mergedAnglesColors[i + 1]);
     }
     for (let i = 1; i < indOfAngleBehindZero * 2; i += 2) {
-      orderedSequence.push(mergedAnglesColors[i - 1], mergedAnglesColors[i]);
+      orderedSeq.push(mergedAnglesColors[i - 1], mergedAnglesColors[i]);
     }
   }
-  return orderedSequence;
+  return orderedSeq;
 }
 
 function mergeAnglesColors(normalizedAngles, colors) {
