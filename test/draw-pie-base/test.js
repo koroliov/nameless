@@ -58,15 +58,3 @@ function drawAndReturnItemsToTest(originalFillStyle, colors, normalizedAngles,
   retVal.actualBase64 = canvas.toDataURL();
   return retVal;
 }
-
-let fileCounterForSorting = 0;
-function writePngs(descriptivePartOfPngName, actualBase64, expectedBase64) {
-  const wPngFileFromBase64 = require('dev-utils/write-png-file-from-base-64');
-  fileCounterForSorting++;
-  const actualFilePath = './png-test-output/' + fileCounterForSorting +
-    '-' + descriptivePartOfPngName + '-actual.png';
-  const expectedFilePath = './png-test-output/' + fileCounterForSorting +
-    '-' + descriptivePartOfPngName + '-expected.png';
-  wPngFileFromBase64(Buffer, actualFilePath, actualBase64);
-  wPngFileFromBase64(Buffer, expectedFilePath, expectedBase64);
-}
