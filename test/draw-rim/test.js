@@ -2,7 +2,7 @@
 
 const tp = require('tape');
 const {createCanvas} = require('canvas');
-const drawPieRim = require('draw-pie-rim');
+const drawRim = require('draw-rim');
 
 const pi = Math.PI;
 
@@ -27,7 +27,7 @@ tp('rim down, one slice', t => {
     rimThickness: 50,
     cntx,
   };
-  drawPieRim(argument);
+  drawRim(argument);
 
   const actualBase64 = canvas.toDataURL();
   const expectedBase64 = require('./expected-rim-down-1-slice.js');
@@ -58,7 +58,7 @@ tp('rim down, 2 slices', t => {
     rimThickness: 50,
     cntx,
   };
-  drawPieRim(argument);
+  drawRim(argument);
 
   const actualBase64 = canvas.toDataURL();
   const expectedBase64 = require('./expected-rim-down-2-slices.js');
@@ -89,7 +89,7 @@ tp('rim down, 3 slices', t => {
     rimThickness: 50,
     cntx,
   };
-  drawPieRim(argument);
+  drawRim(argument);
 
   const actualBase64 = canvas.toDataURL();
   const expectedBase64 = require('./expected-rim-down-3-slices.js');
@@ -120,7 +120,7 @@ tp('rim up, one slice', t => {
     rimThickness: 50,
     cntx,
   };
-  drawPieRim(argument);
+  drawRim(argument);
 
   const actualBase64 = canvas.toDataURL();
   const expectedBase64 = require('./expected-rim-up-1-slice.js');
@@ -151,7 +151,7 @@ tp('rim up, 2 slices', t => {
     rimThickness: 50,
     cntx,
   };
-  drawPieRim(argument);
+  drawRim(argument);
 
   const actualBase64 = canvas.toDataURL();
   const expectedBase64 = require('./expected-rim-up-2-slices.js');
@@ -182,7 +182,7 @@ tp('rim up, 3 slices', t => {
     rimThickness: 50,
     cntx,
   };
-  drawPieRim(argument);
+  drawRim(argument);
 
   const actualBase64 = canvas.toDataURL();
   const expectedBase64 = require('./expected-rim-up-3-slices.js');

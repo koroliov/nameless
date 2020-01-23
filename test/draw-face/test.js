@@ -2,7 +2,7 @@
 
 const tp = require('tape');
 const {createCanvas} = require('canvas');
-const drawPieFace = require('draw-pie-face');
+const drawFace = require('draw-face');
 
 tp('draws a charted circle filled with colors, clockwise', t => {
   t.plan(2);
@@ -51,7 +51,7 @@ function drawAndReturnItemsToTest(originalFillStyle, colors, normalizedAngles,
   if (counterClockwise !== null) {
     argument.counterClockwise = counterClockwise;
   }
-  drawPieFace(argument);
+  drawFace(argument);
 
   const retVal = Object.create(null);
   retVal.currentFillStyle = cntx.fillStyle;
