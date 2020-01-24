@@ -12,7 +12,7 @@ tp('angles in (-2Pi, 4Pi) range normalized to [0, 2Pi)', t => {
     -3,
     0,
     2 * Math.PI,
-    1,
+    -2 * Math.PI + 0.01,
     1,
   ];
   const expectedNormAngles = [
@@ -22,7 +22,7 @@ tp('angles in (-2Pi, 4Pi) range normalized to [0, 2Pi)', t => {
     2 * Math.PI - 3,
     0,
     0,
-    1,
+    0.009999999999999787,
     1,
   ];
   const actualNormAngles = normalizeAngles(angles);
