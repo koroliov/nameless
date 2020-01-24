@@ -16,7 +16,7 @@ function drawPieRim(args) {
     baseArcCounterClockwise = true;
     rimArcCounterClockwise = false;
   }
-  const rimThicknessScaled = rimThickness * rimScale;
+  const rimThicknessScaled = rimThickness * rimScale / scaleY;
   let startX = ox + radius;
   let startY = oy;
   const oyRim = oy + rimThicknessScaled;

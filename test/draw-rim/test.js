@@ -3,6 +3,7 @@
 const tp = require('tape');
 const {createCanvas} = require('canvas');
 const drawRim = require('draw-rim');
+//const writeFile = require('dev-utils/write-png-file-from-base-64');
 
 const pi = Math.PI;
 
@@ -24,7 +25,7 @@ tp('rim down, one slice', t => {
     rimDrawSequence: [0, '#11ab12', pi],
     isRimDown: true,
     scaleY: 0.5,
-    rimThickness: 50,
+    rimThickness: 30,
     cntx,
   };
   drawRim(argument);
@@ -55,7 +56,7 @@ tp('rim down, 2 slices', t => {
     rimDrawSequence: [0, '#11ab12', 1, '#e22929', pi],
     isRimDown: true,
     scaleY: 0.5,
-    rimThickness: 50,
+    rimThickness: 30,
     cntx,
   };
   drawRim(argument);
@@ -86,7 +87,7 @@ tp('rim down, 3 slices', t => {
     rimDrawSequence: [0, '#11ab12', 1, '#e22929', 2.5, '#113fda', pi],
     isRimDown: true,
     scaleY: 0.5,
-    rimThickness: 50,
+    rimThickness: 30,
     cntx,
   };
   drawRim(argument);
@@ -117,7 +118,7 @@ tp('rim up, one slice', t => {
     rimDrawSequence: [0, '#11ab12', pi],
     isRimDown: false,
     scaleY: 0.5,
-    rimThickness: 50,
+    rimThickness: 30,
     cntx,
   };
   drawRim(argument);
@@ -148,7 +149,7 @@ tp('rim up, 2 slices', t => {
     rimDrawSequence: [0, '#11ab12', 5, '#e22929', pi],
     isRimDown: false,
     scaleY: 0.5,
-    rimThickness: 50,
+    rimThickness: 30,
     cntx,
   };
   drawRim(argument);
@@ -179,7 +180,7 @@ tp('rim up, 3 slices', t => {
     rimDrawSequence: [0, '#11ab12', 5, '#e22929', 4.5, '#113fda', pi],
     isRimDown: false,
     scaleY: 0.5,
-    rimThickness: 50,
+    rimThickness: 30,
     cntx,
   };
   drawRim(argument);
