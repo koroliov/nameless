@@ -31,7 +31,7 @@ tp('rim down, one slice', t => {
   drawRim(argument);
 
   const actualBase64 = canvas.toDataURL();
-  const expectedBase64 = require('./expected-rim-down-1-slice.js');
+  const expectedBase64 = require('./expected-rim-down-1-slice-base64.js');
   t.equal(expectedBase64 === actualBase64, true);
   t.equal(cntx.fillStyle, originalFillStyle);
   t.equal(cntx.strokeStyle, originalStrokeStyle);
@@ -62,7 +62,7 @@ tp('rim down, 2 slices', t => {
   drawRim(argument);
 
   const actualBase64 = canvas.toDataURL();
-  const expectedBase64 = require('./expected-rim-down-2-slices.js');
+  const expectedBase64 = require('./expected-rim-down-2-slices-base64.js');
   t.equal(expectedBase64 === actualBase64, true);
   t.equal(cntx.fillStyle, originalFillStyle);
   t.equal(cntx.strokeStyle, originalStrokeStyle);
@@ -93,7 +93,7 @@ tp('rim down, 3 slices', t => {
   drawRim(argument);
 
   const actualBase64 = canvas.toDataURL();
-  const expectedBase64 = require('./expected-rim-down-3-slices.js');
+  const expectedBase64 = require('./expected-rim-down-3-slices-base64.js');
   t.equal(expectedBase64 === actualBase64, true);
   t.equal(cntx.fillStyle, originalFillStyle);
   t.equal(cntx.strokeStyle, originalStrokeStyle);
@@ -124,7 +124,7 @@ tp('rim up, one slice', t => {
   drawRim(argument);
 
   const actualBase64 = canvas.toDataURL();
-  const expectedBase64 = require('./expected-rim-up-1-slice.js');
+  const expectedBase64 = require('./expected-rim-up-1-slice-base64.js');
   t.equal(expectedBase64 === actualBase64, true);
   t.equal(cntx.fillStyle, originalFillStyle);
   t.equal(cntx.strokeStyle, originalStrokeStyle);
@@ -155,7 +155,7 @@ tp('rim up, 2 slices', t => {
   drawRim(argument);
 
   const actualBase64 = canvas.toDataURL();
-  const expectedBase64 = require('./expected-rim-up-2-slices.js');
+  const expectedBase64 = require('./expected-rim-up-2-slices-base64.js');
   t.equal(expectedBase64 === actualBase64, true);
   t.equal(cntx.fillStyle, originalFillStyle);
   t.equal(cntx.strokeStyle, originalStrokeStyle);
@@ -186,7 +186,7 @@ tp('rim up, 3 slices', t => {
   drawRim(argument);
 
   const actualBase64 = canvas.toDataURL();
-  const expectedBase64 = require('./expected-rim-up-3-slices.js');
+  const expectedBase64 = require('./expected-rim-up-3-slices-base64.js');
   t.equal(expectedBase64 === actualBase64, true);
   t.equal(cntx.fillStyle, originalFillStyle);
   t.equal(cntx.strokeStyle, originalStrokeStyle);
