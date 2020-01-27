@@ -1,7 +1,7 @@
 'use strict';
 
 const tp = require('tape');
-const normalizeAngles = require('prepare-angles-n-colors/normalize-angles');
+const normalizeAngles = require('pie/prepare-angles-n-colors/normalize-angles');
 
 tp('angles in (-2Pi, 4Pi) range normalized to [0, 2Pi)', t => {
   t.plan(2);

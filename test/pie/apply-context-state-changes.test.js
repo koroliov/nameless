@@ -2,7 +2,7 @@
 
 const tp = require('tape');
 const sinon = require('sinon');
-const applyContextStateChanges = require('apply-context-state-changes');
+const applyContextStateChanges = require('pie/apply-context-state-changes');
 
 tp('applies styles, translation, rotation, scaling in the right order', t => {
   t.plan(13);

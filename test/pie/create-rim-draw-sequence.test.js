@@ -1,7 +1,7 @@
 'use strict';
 
 const tp = require('tape');
-const createRimDrawSequence = require('create-rim-draw-sequence');
+const createRimDrawSequence = require('pie/create-rim-draw-sequence');
 const pi = Math.PI;
 
 

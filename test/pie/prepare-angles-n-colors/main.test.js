@@ -25,7 +25,7 @@ tp('takes args, filters 0%, calculates angles, returns angles&percents', t => {
   const normalizeAnglesRetVal = Symbol('angles normalized');
   const normalizeAnglesStub = sinon.stub().returns(normalizeAnglesRetVal);
 
-  const main = proxyquire('prepare-angles-n-colors/main', {
+  const main = proxyquire('pie/prepare-angles-n-colors/main', {
     './filter-zero-percents': filterZeroPercentsStub,
     './calc-angles-from-percents': calcAnglesFromPercentsStub,
     './normalize-angles': normalizeAnglesStub,

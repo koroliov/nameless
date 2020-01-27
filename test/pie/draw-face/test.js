@@ -2,7 +2,7 @@
 
 const tp = require('tape');
 const {createCanvas} = require('canvas');
-const drawFace = require('draw-face');
+const drawFace = require('pie/draw-face');
 
 tp('draws a charted circle filled with colors, clockwise', t => {
   t.plan(2);

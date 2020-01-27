@@ -3,7 +3,7 @@
 const tp = require('tape');
 const {createCanvas} = require('canvas');
 //const wr = require('dev-utils/write-png-file-from-base-64');
-const draw100PercentPie = require('draw-100-percent-pie');
+const draw100PercentPie = require('pie/draw-100-percent-pie');
 
 tp('draw 100% pie (no slices)', t => {
   t.plan(4);

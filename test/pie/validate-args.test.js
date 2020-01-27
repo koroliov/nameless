@@ -1,7 +1,7 @@
 'use strict';
 
 const tp = require('tape');
-const validateArgs = require('validate-args');
+const validateArgs = require('pie/validate-args');
 
 tp('validate argument type', t => {
   t.plan(1);

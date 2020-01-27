@@ -1,7 +1,7 @@
 'use strict';
 
 const tp = require('tape');
-const fillOptionalArgs = require('fill-optional-args');
+const fillOptionalArgs = require('pie/fill-optional-args');
 
 tp('fills absent optional arguments, and nothing more', t => {
   t.plan(6);

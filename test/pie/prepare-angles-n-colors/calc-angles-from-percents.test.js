@@ -2,7 +2,7 @@
 
 const tp = require('tape');
 const calcAnglesFromPercents =
-    require('prepare-angles-n-colors/calc-angles-from-percents');
+    require('pie/prepare-angles-n-colors/calc-angles-from-percents');
 const onePercentAngle = Math.PI / 50;
 
 tp('clockwise, start 0', t => {

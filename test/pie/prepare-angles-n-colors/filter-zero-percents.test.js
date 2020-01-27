@@ -2,7 +2,7 @@
 
 const tp = require('tape');
 const filterZeroPercents =
-    require('prepare-angles-n-colors/filter-zero-percents');
+    require('pie/prepare-angles-n-colors/filter-zero-percents');
 
 tp('filters zero percent values and corresponding colors', t => {
   t.plan(2);

@@ -2,7 +2,7 @@
 
 const tp = require('tape');
 const {createCanvas} = require('canvas');
-const drawRim = require('draw-rim');
+const drawRim = require('pie/draw-rim');
 //const writeFile = require('dev-utils/write-png-file-from-base-64');
 
 const pi = Math.PI;
