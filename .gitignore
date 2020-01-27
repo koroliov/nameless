@@ -1,7 +1,7 @@
 node_modules
-current/browser.js
-current/module-node.js
-current/todo.txt
+sandbox/*
+!sandbox/browser.css
+!sandbox/browser.html
 tools/*
 !tools/list.txt
 !tools/command-examples.txt
