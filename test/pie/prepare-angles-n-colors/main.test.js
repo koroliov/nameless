@@ -32,7 +32,7 @@ tp('takes args, filters 0%, calculates angles, returns angles&percents', t => {
   });
 
   const {colors, angles} =
-      main(percentsOriginal, colorsOriginal, startAngle, counterClockwise);
+      main({percentsOriginal, colorsOriginal, startAngle, counterClockwise});
   t.equal(colors, filteredColors);
   t.equal(angles, normalizeAnglesRetVal);
 

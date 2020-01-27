@@ -4,7 +4,8 @@ const filterZeroPercents = require('./filter-zero-percents');
 const calcAnglesFromPercents = require('./calc-angles-from-percents');
 const normalizeAngles = require('./normalize-angles');
 
-function main(percentsOriginal, colorsOriginal, startAngle, counterClockwise) {
+function main(args) {
+  const {percentsOriginal, colorsOriginal, startAngle, counterClockwise} = args;
   const {colors, percents} =
       filterZeroPercents(percentsOriginal, colorsOriginal);
   const angles = calcAnglesFromPercents({
