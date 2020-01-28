@@ -683,7 +683,7 @@ tp('validate isRimDown', t => {
   t.equal(actualResult, '');
 });
 
-tp.skip('validate skipValidation', t => {
+tp('validate skipValidation', t => {
   t.plan(2);
   let argument = getValidMandatoryArgumentsMap();
 
