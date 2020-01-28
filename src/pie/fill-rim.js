@@ -1,6 +1,6 @@
 'use strict';
 
-function drawPieRim(args) {
+function fillRim(args) {
   const {ox, oy, radius, rimDrawSequence, isRimDown, scaleY, rimThickness,
       cntx} = args;
   const originalFillStyle = cntx.fillStyle;
@@ -27,11 +27,9 @@ function drawPieRim(args) {
 
   for (i = 1; i < rimDrawSequence.length; i += 2) {
     fillInnerPartOfSlice();
-    strokeSliceEdgesTopRightBottom();
     startX = endX;
     startY = endY;
   }
-  strokeLeftEdgeOfLastSlice();
 
   cntx.fillStyle = originalFillStyle;
 
@@ -49,23 +47,6 @@ function drawPieRim(args) {
     cntx.fillStyle = rimDrawSequence[i];
     cntx.fill();
   }
-
-  function strokeSliceEdgesTopRightBottom() {
-    cntx.beginPath();
-    cntx.moveTo(endX, endY);
-    cntx.arc(ox, oy, radius, rimDrawSequence[i + 1], rimDrawSequence[i - 1],
-        rimArcCounterClockwise);
-    cntx.lineTo(startX, startYRim);
-    cntx.arc(ox, oyRim, radius, rimDrawSequence[i - 1], rimDrawSequence[i + 1],
-        baseArcCounterClockwise);
-    cntx.stroke();
-  }
-
-  function strokeLeftEdgeOfLastSlice() {
-    cntx.moveTo(ox - radius, oy);
-    cntx.lineTo(ox - radius, oy + rimThicknessScaled);
-    cntx.stroke();
-  }
 }
 
-module.exports = drawPieRim;
+module.exports = fillRim;
