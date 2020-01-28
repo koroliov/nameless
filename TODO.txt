@@ -1,5 +1,0 @@
-- create the pie chart
-- implement html/css-like markup
-- make src/dev-utils/write-png-file-from-base-64.js handle file path on
-    different platforms (currently it accepts full paths in a way, which makes
-    it work only on unix, that is it should handle slashes /, \)
