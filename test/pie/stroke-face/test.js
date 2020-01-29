@@ -60,3 +60,33 @@ tp('strokes a charted circle counter-clockwise', t => {
   t.equal(cntx.fillStyle, originalFillStyle);
   t.end();
 });
+
+tp('strokes a circle with no slices (a single piece), if angles.length is 1, ' +
+    'no matter what other arguments are (though most likely this will not ' +
+    'occur, due to validation)', t => {
+  const canvWidth = 400;
+  const canvHeight = 300;
+  const canvas = createCanvas(canvWidth, canvHeight);
+  const cntx = canvas.getContext('2d');
+  const originalFillStyle = '#ffffff';
+  cntx.fillStyle = originalFillStyle;
+  cntx.fillRect(0, 0, canvWidth, canvHeight);
+  cntx.lineWidth = 0.1;
+  cntx.strokeStyle = '#000000';
+
+  const argument = {
+    ox: canvWidth / 2,
+    oy: canvHeight / 2,
+    radius: (canvHeight - 100) / 2,
+    cntx,
+    angles: [0],
+    counterClockwise: true,
+  };
+  strokeFace(argument);
+
+  const actualBase64 = canvas.toDataURL();
+  const expectedBase64 = require('./expected-one-slice-base64.js');
+  t.equal(actualBase64 === expectedBase64, true);
+  t.equal(cntx.fillStyle, originalFillStyle);
+  t.end();
+});
