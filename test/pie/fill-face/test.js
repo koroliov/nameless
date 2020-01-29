@@ -40,8 +40,6 @@ tp('draws a charted circle filled with colors, counter-clockwise', t => {
   const originalFillStyle = '#ffffff';
   cntx.fillStyle = originalFillStyle;
   cntx.fillRect(0, 0, canvWidth, canvHeight);
-  cntx.lineWidth = 1;
-  cntx.strokeStyle = '#000000';
 
   const argument = {
     ox: canvWidth / 2,
