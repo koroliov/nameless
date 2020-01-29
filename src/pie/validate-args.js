@@ -25,8 +25,12 @@ function validateArgs(args, GlobalCanvas2dContextConstructor) {
       return !Number.isFinite(val) || val < 0
     }],
     ['strokeColor', propName => {
-      const val = args.get(propName);
-      return typeof val !== 'string' || val === '';
+      if (args.get('strokeWidth') !== 0) {
+        const val = args.get(propName);
+        return typeof val !== 'string' || val === '';
+      } else {
+        return false;
+      }
     }],
     ['cntx', propName => {
       const val = args.get(propName);

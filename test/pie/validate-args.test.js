@@ -392,7 +392,7 @@ tp('validate strokeWidth', t => {
   t.equal(actualResult, '');
 });
 
-tp('validate strokeColor', t => {
+tp('validate strokeColor with strokeWidth non-0', t => {
   t.plan(7);
   let argument = getValidMandatoryArgumentsMap();
 
@@ -419,6 +419,40 @@ tp('validate strokeColor', t => {
   argument.set('strokeColor', '');
   actualResult = validateArgs(argument, MockGlobalCanvasContext2d);
   t.equal(actualResult, 'pie chart: invalid or absent strokeColor');
+
+  argument.set('strokeColor', 'any non-empty');
+  actualResult = validateArgs(argument, MockGlobalCanvasContext2d);
+  t.equal(actualResult, '');
+});
+
+tp('validate strokeColor with strokeWidth 0', t => {
+  t.plan(7);
+  let argument = getValidMandatoryArgumentsMap();
+  argument.set('strokeWidth', 0);
+
+  argument.delete('strokeColor');
+  let actualResult = validateArgs(argument, MockGlobalCanvasContext2d);
+  t.equal(actualResult, '');
+
+  argument.set('strokeColor', {valueOf() {return 123;}});
+  actualResult = validateArgs(argument, MockGlobalCanvasContext2d);
+  t.equal(actualResult, '');
+
+  argument.set('strokeColor', {toString() {return '123';}});
+  actualResult = validateArgs(argument, MockGlobalCanvasContext2d);
+  t.equal(actualResult, '');
+
+  argument.set('strokeColor', null);
+  actualResult = validateArgs(argument, MockGlobalCanvasContext2d);
+  t.equal(actualResult, '');
+
+  argument.set('strokeColor', 123);
+  actualResult = validateArgs(argument, MockGlobalCanvasContext2d);
+  t.equal(actualResult, '');
+
+  argument.set('strokeColor', '');
+  actualResult = validateArgs(argument, MockGlobalCanvasContext2d);
+  t.equal(actualResult, '');
 
   argument.set('strokeColor', 'any non-empty');
   actualResult = validateArgs(argument, MockGlobalCanvasContext2d);

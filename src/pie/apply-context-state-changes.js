@@ -2,8 +2,10 @@
 
 function applyContextStateChanges(args) {
   const {cntx, ox, oy, strokeColor, strokeWidth, rotationAngle, scaleY} = args;
-  cntx.strokeStyle = strokeColor;
-  cntx.lineWidth = strokeWidth;
+  if (strokeWidth !== 0) {
+    cntx.strokeStyle = strokeColor;
+    cntx.lineWidth = strokeWidth;
+  }
 
   cntx.translate(ox, oy);
   cntx.rotate(rotationAngle);
