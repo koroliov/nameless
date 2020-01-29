@@ -48,7 +48,7 @@ tp('applies styles, translation, rotation, scaling in the right order', t => {
   t.equal(secondTranslateCall.calledImmediatelyAfter(scaleCall), true);
   t.deepEqual(secondTranslateCall.args, [-argument.ox, -argument.oy]);
 
-tp('if strokeWidth is 0, strokeColor is not applied', t => {
+tp('if strokeWidth is 0, strokeColor, strokeWidth are not applied', t => {
   t.plan(13);
   const originalStrokeStyle = Symbol('original strokeStyle');
   const originalLineWidth = Symbol('original lineWidth');
