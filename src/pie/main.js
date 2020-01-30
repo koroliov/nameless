@@ -32,20 +32,12 @@ function main(consoleError, Context2dConstructor, map) {
     scaleY: fullOptions.get('scaleY'),
   });
 
-  let preparedAnglesColors;
-  if (isSingleSlice()) {
-    preparedAnglesColors = {
-      angles: [0],
-      colors: [fullOptions.get('colors')[0]],
-    };
-  } else {
-    preparedAnglesColors = prepareAnglesColors({
-      percentsOriginal: fullOptions.get('percents'),
-      colorsOriginal: fullOptions.get('colors'),
-      startAngle: fullOptions.get('startAngle'),
-      counterClockwise: fullOptions.get('counterClockwise'),
-    });
-  }
+  const preparedAnglesColors = prepareAnglesColors({
+    percentsOriginal: fullOptions.get('percents'),
+    colorsOriginal: fullOptions.get('colors'),
+    startAngle: fullOptions.get('startAngle'),
+    counterClockwise: fullOptions.get('counterClockwise'),
+  });
   fillFace({
     ox: fullOptions.get('ox'),
     oy: fullOptions.get('oy'),
@@ -59,7 +51,7 @@ function main(consoleError, Context2dConstructor, map) {
   let rimDrawSeq;
   if (isRimVisible()) {
     if (isSingleSlice()) {
-      rimDrawSeq = [0, fullOptions.get('colors')[0], Math.PI];
+      rimDrawSeq = [0, preparedAnglesColors.colors[0], Math.PI];
     } else {
       rimDrawSeq = createRimDrawSequence({
         normalizedAngles: preparedAnglesColors.angles,
@@ -109,7 +101,7 @@ function main(consoleError, Context2dConstructor, map) {
   }
 
   function isSingleSlice() {
-    return fullOptions.get('percents')[0] === 100;
+    return preparedAnglesColors.colors.length === 1;
   }
 }
 

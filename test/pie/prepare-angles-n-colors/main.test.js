@@ -5,7 +5,6 @@ const proxyquire = require('proxyquire').noCallThru();
 const sinon = require('sinon');
 
 tp('takes args, filters 0%, calculates angles, returns angles&percents', t => {
-  t.plan(8);
   const colorsOriginal = Symbol('colors original');
   const percentsOriginal = Symbol('percents original');
   const startAngle = Symbol('start angle');
@@ -53,4 +52,35 @@ tp('takes args, filters 0%, calculates angles, returns angles&percents', t => {
   t.deepEqual(normalizeAnglesStub.getCall(0).args,
     [calcAnglesFromPercentsRetVal]
   );
+
+  t.end();
+});
+
+tp('in case of 100% present it returns single color and angle [0]', t => {
+  const colorsOriginal = Symbol('colors original');
+  const percentsOriginal = Symbol('percents original');
+  const startAngle = Symbol('start angle');
+  const counterClockwise = Symbol('counterClockwise flag');
+
+  const mainDeps = {
+    './filter-zero-percents': sinon.stub().returns({
+      colors: ['single col'],
+      percents: [100],
+    }),
+    './calc-angles-from-percents': sinon.fake(),
+    './normalize-angles': sinon.fake(),
+  };
+  const main = proxyquire('pie/prepare-angles-n-colors/main', mainDeps);
+
+  const actual =
+      main({percentsOriginal, colorsOriginal, startAngle, counterClockwise});
+  t.deepEqual(actual, {angles: [0], colors: ['single col']});
+
+  t.equal(mainDeps['./filter-zero-percents'].callCount, 1);
+  t.deepEqual(mainDeps['./filter-zero-percents'].getCall(0).args,
+      [percentsOriginal, colorsOriginal]);
+  t.equal(mainDeps['./calc-angles-from-percents'].callCount, 0);
+  t.equal(mainDeps['./normalize-angles'].callCount, 0);
+
+  t.end();
 });
