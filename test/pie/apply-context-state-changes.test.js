@@ -47,6 +47,7 @@ tp('applies styles, translation, rotation, scaling in the right order', t => {
   const secondTranslateCall = mockContext2d.translate.getCall(1);
   t.equal(secondTranslateCall.calledImmediatelyAfter(scaleCall), true);
   t.deepEqual(secondTranslateCall.args, [-argument.ox, -argument.oy]);
+});
 
 tp('if strokeWidth is 0, strokeColor, strokeWidth are not applied', t => {
   t.plan(13);
@@ -93,5 +94,4 @@ tp('if strokeWidth is 0, strokeColor, strokeWidth are not applied', t => {
   const secondTranslateCall = mockContext2d.translate.getCall(1);
   t.equal(secondTranslateCall.calledImmediatelyAfter(scaleCall), true);
   t.deepEqual(secondTranslateCall.args, [-argument.ox, -argument.oy]);
-});
 });
