@@ -31,6 +31,7 @@ tp('in case of a validation error it calls only console.error', t => {
     './validate-args': sinon.stub().returns(validateArgsRetVal),
     './fill-optional-args': sinon.fake(),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main': sinon.fake(),
     './fill-face': sinon.fake(),
     './stroke-face': sinon.fake(),
@@ -48,6 +49,7 @@ tp('in case of a validation error it calls only console.error', t => {
       [argument, mockCntxConstructor]);
   t.equal(pieDeps['./fill-optional-args'].callCount, 0);
   t.equal(pieDeps['./apply-context-state-changes'].callCount, 0);
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 0);
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 0);
   t.equal(pieDeps['./fill-face'].callCount, 0);
   t.equal(pieDeps['./stroke-face'].callCount, 0);
@@ -95,6 +97,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/F/F', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -130,6 +133,12 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/F/F', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
 
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
@@ -152,7 +161,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/F/F', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 1);
   const createRimDrawSeqCall = pieDeps['./create-rim-draw-sequence'].getCall(0);
@@ -175,7 +184,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/F/F', t => {
     rimThickness: fillOptionalArgsRetVal.get('thickness'),
     cntx: fillOptionalArgsRetVal.get('cntx'),
   }]);
-  t.equal(fillRimCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillRimCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./stroke-face'].callCount, 1);
   const strokeFaceCall = pieDeps['./stroke-face'].getCall(0);
@@ -253,6 +262,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/F/T', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -289,6 +299,13 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/F/T', t => {
   }]);
 
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
+
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
       pieDeps['./prepare-angles-n-colors/main'].getCall(0);
@@ -310,7 +327,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/F/T', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 1);
   const createRimDrawSeqCall = pieDeps['./create-rim-draw-sequence'].getCall(0);
@@ -333,7 +350,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/F/T', t => {
     rimThickness: fillOptionalArgsRetVal.get('thickness'),
     cntx: fillOptionalArgsRetVal.get('cntx'),
   }]);
-  t.equal(fillRimCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillRimCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./stroke-face'].callCount, 0);
   t.equal(pieDeps['./stroke-rim'].callCount, 0);
@@ -386,6 +403,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/T/F', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -421,6 +439,12 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/T/F', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
 
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
@@ -443,7 +467,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/T/F', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
   t.equal(pieDeps['./fill-rim'].callCount, 0);
@@ -509,6 +533,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/T/T', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -544,6 +569,12 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/T/T', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
 
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
@@ -566,7 +597,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/F/T/T', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
   t.equal(pieDeps['./fill-rim'].callCount, 0);
@@ -620,6 +651,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/T/F/F', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -655,6 +687,12 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/T/F/F', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
 
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
@@ -677,7 +715,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/T/F/F', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
   t.equal(pieDeps['./fill-rim'].callCount, 0);
@@ -743,6 +781,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/T/F/T', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -778,6 +817,12 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/T/F/T', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
 
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
@@ -800,7 +845,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/T/F/T', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
   t.equal(pieDeps['./fill-rim'].callCount, 0);
@@ -854,6 +899,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/T/T/F', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -889,6 +935,12 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/T/T/F', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
 
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
@@ -911,7 +963,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/T/T/F', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
   t.equal(pieDeps['./fill-rim'].callCount, 0);
@@ -977,6 +1029,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/T/T/T', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -1012,6 +1065,12 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/T/T/T', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
 
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
@@ -1034,7 +1093,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/F/T/T/T', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
   t.equal(pieDeps['./fill-rim'].callCount, 0);
@@ -1087,6 +1146,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/F/F', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -1122,6 +1182,13 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/F/F', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
+
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
       pieDeps['./prepare-angles-n-colors/main'].getCall(0);
@@ -1143,7 +1210,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/F/F', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
 
@@ -1159,7 +1226,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/F/F', t => {
     rimThickness: fillOptionalArgsRetVal.get('thickness'),
     cntx: fillOptionalArgsRetVal.get('cntx'),
   }]);
-  t.equal(fillRimCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillRimCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./stroke-face'].callCount, 1);
   const strokeFaceCall = pieDeps['./stroke-face'].getCall(0);
@@ -1236,6 +1303,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/F/T', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -1271,6 +1339,13 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/F/T', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
+
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
       pieDeps['./prepare-angles-n-colors/main'].getCall(0);
@@ -1292,7 +1367,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/F/T', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
 
@@ -1308,7 +1383,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/F/T', t => {
     rimThickness: fillOptionalArgsRetVal.get('thickness'),
     cntx: fillOptionalArgsRetVal.get('cntx'),
   }]);
-  t.equal(fillRimCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillRimCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./stroke-face'].callCount, 0);
   t.equal(pieDeps['./stroke-rim'].callCount, 0);
@@ -1361,6 +1436,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/T/F', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -1396,6 +1472,13 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/T/F', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
+
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
       pieDeps['./prepare-angles-n-colors/main'].getCall(0);
@@ -1405,7 +1488,6 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/T/F', t => {
     startAngle: fillOptionalArgsRetVal.get('startAngle'),
     counterClockwise: fillOptionalArgsRetVal.get('counterClockwise'),
   }]);
-
 
   t.equal(pieDeps['./fill-face'].callCount, 1);
   const fillFaceCall = pieDeps['./fill-face'].getCall(0);
@@ -1418,7 +1500,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/T/F', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
   t.equal(pieDeps['./fill-rim'].callCount, 0);
@@ -1483,6 +1565,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/T/T', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -1518,6 +1601,13 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/T/T', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
+
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
       pieDeps['./prepare-angles-n-colors/main'].getCall(0);
@@ -1527,7 +1617,6 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/T/T', t => {
     startAngle: fillOptionalArgsRetVal.get('startAngle'),
     counterClockwise: fillOptionalArgsRetVal.get('counterClockwise'),
   }]);
-
 
   t.equal(pieDeps['./fill-face'].callCount, 1);
   const fillFaceCall = pieDeps['./fill-face'].getCall(0);
@@ -1540,7 +1629,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/F/T/T', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
   t.equal(pieDeps['./fill-rim'].callCount, 0);
@@ -1593,6 +1682,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/F/F', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -1628,6 +1718,13 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/F/F', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
+
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
       pieDeps['./prepare-angles-n-colors/main'].getCall(0);
@@ -1637,7 +1734,6 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/F/F', t => {
     startAngle: fillOptionalArgsRetVal.get('startAngle'),
     counterClockwise: fillOptionalArgsRetVal.get('counterClockwise'),
   }]);
-
 
   t.equal(pieDeps['./fill-face'].callCount, 1);
   const fillFaceCall = pieDeps['./fill-face'].getCall(0);
@@ -1650,7 +1746,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/F/F', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
 
@@ -1716,6 +1812,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/F/T', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -1751,6 +1848,13 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/F/T', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
+
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
       pieDeps['./prepare-angles-n-colors/main'].getCall(0);
@@ -1760,7 +1864,6 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/F/T', t => {
     startAngle: fillOptionalArgsRetVal.get('startAngle'),
     counterClockwise: fillOptionalArgsRetVal.get('counterClockwise'),
   }]);
-
 
   t.equal(pieDeps['./fill-face'].callCount, 1);
   const fillFaceCall = pieDeps['./fill-face'].getCall(0);
@@ -1773,7 +1876,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/F/T', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
   t.equal(pieDeps['./fill-rim'].callCount, 0);
@@ -1826,6 +1929,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/T/F', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -1861,6 +1965,13 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/T/F', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
+
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
       pieDeps['./prepare-angles-n-colors/main'].getCall(0);
@@ -1870,7 +1981,6 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/T/F', t => {
     startAngle: fillOptionalArgsRetVal.get('startAngle'),
     counterClockwise: fillOptionalArgsRetVal.get('counterClockwise'),
   }]);
-
 
   t.equal(pieDeps['./fill-face'].callCount, 1);
   const fillFaceCall = pieDeps['./fill-face'].getCall(0);
@@ -1883,7 +1993,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/T/F', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
   t.equal(pieDeps['./fill-rim'].callCount, 0);
@@ -1948,6 +2058,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/T/T', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -1983,6 +2094,13 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/T/T', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
+
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
       pieDeps['./prepare-angles-n-colors/main'].getCall(0);
@@ -1992,7 +2110,6 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/T/T', t => {
     startAngle: fillOptionalArgsRetVal.get('startAngle'),
     counterClockwise: fillOptionalArgsRetVal.get('counterClockwise'),
   }]);
-
 
   t.equal(pieDeps['./fill-face'].callCount, 1);
   const fillFaceCall = pieDeps['./fill-face'].getCall(0);
@@ -2005,7 +2122,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, F/T/T/T/T', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
 
@@ -2060,6 +2177,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/F/F/F', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -2092,6 +2210,12 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/F/F/F', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
 
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
@@ -2114,7 +2238,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/F/F/F', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 1);
   const createRimDrawSeqCall = pieDeps['./create-rim-draw-sequence'].getCall(0);
@@ -2137,7 +2261,7 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/F/F/F', t => {
     rimThickness: fillOptionalArgsRetVal.get('thickness'),
     cntx: fillOptionalArgsRetVal.get('cntx'),
   }]);
-  t.equal(fillRimCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillRimCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./stroke-face'].callCount, 1);
   const strokeFaceCall = pieDeps['./stroke-face'].getCall(0);
@@ -2213,6 +2337,7 @@ tp('skipValidat is not present', t => {
     './validate-args': sinon.stub().returns(''),
     './fill-optional-args': sinon.stub().returns(fillOptionalArgsRetVal),
     './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
     './prepare-angles-n-colors/main':
         sinon.stub().returns(prepAnglesColorsRetVal),
     './fill-face': sinon.fake(),
@@ -2245,6 +2370,12 @@ tp('skipValidat is not present', t => {
     scaleY: fillOptionalArgsRetVal.get('scaleY'),
   }]);
 
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 1);
+  const corOyForThicknCall =
+      pieDeps['./correct-oy-for-thickness'].getCall(0);
+  t.equal(corOyForThicknCall.args.length, 1);
+  t.equal(corOyForThicknCall.args[0], fillOptionalArgsRetVal);
+  t.equal(corOyForThicknCall.calledAfter(applyCntxStateChangesCall), true);
 
   t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 1);
   const prepAnglesColorsCall =
@@ -2267,7 +2398,7 @@ tp('skipValidat is not present', t => {
     angles: prepAnglesColorsRetVal.angles,
     colors: prepAnglesColorsRetVal.colors,
   }]);
-  t.equal(fillFaceCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillFaceCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 1);
   const createRimDrawSeqCall = pieDeps['./create-rim-draw-sequence'].getCall(0);
@@ -2290,7 +2421,7 @@ tp('skipValidat is not present', t => {
     rimThickness: fillOptionalArgsRetVal.get('thickness'),
     cntx: fillOptionalArgsRetVal.get('cntx'),
   }]);
-  t.equal(fillRimCall.calledAfter(applyCntxStateChangesCall), true);
+  t.equal(fillRimCall.calledAfter(corOyForThicknCall), true);
 
   t.equal(pieDeps['./stroke-face'].callCount, 1);
   const strokeFaceCall = pieDeps['./stroke-face'].getCall(0);

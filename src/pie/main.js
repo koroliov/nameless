@@ -3,6 +3,7 @@
 const validateArgs = require('./validate-args');
 const fillOptionalArgs = require('./fill-optional-args');
 const applyContextStateChanges = require('./apply-context-state-changes');
+const correctOyForThickness = require('./correct-oy-for-thickness');
 const prepareAnglesColors = require('./prepare-angles-n-colors/main');
 const fillFace = require('./fill-face');
 const strokeFace = require('./stroke-face');
@@ -31,6 +32,7 @@ function main(consoleError, Context2dConstructor, map) {
     rotationAngle: fullOptions.get('rotationAngle'),
     scaleY: fullOptions.get('scaleY'),
   });
+  correctOyForThickness(fullOptions);
 
   const preparedAnglesColors = prepareAnglesColors({
     percentsOriginal: fullOptions.get('percents'),
