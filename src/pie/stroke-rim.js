@@ -5,7 +5,7 @@ function strokeRim(args) {
       cntx} = args;
   const originalFillStyle = cntx.fillStyle;
 
-  let rimScale = 1 - scaleY;
+  let rimScale = Math.sqrt(1 - scaleY * scaleY);
   let baseArcCounterClockwise;
   let rimArcCounterClockwise;
   if (isRimDown) {

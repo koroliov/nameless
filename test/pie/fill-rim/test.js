@@ -23,7 +23,7 @@ tp('rim down, one slice', t => {
     rimDrawSequence: [0, '#11ab12', pi],
     isRimDown: true,
     scaleY: 0.5,
-    rimThickness: 30,
+    rimThickness: 20,
     cntx,
   };
   fillRim(argument);
@@ -51,7 +51,7 @@ tp('rim down, 2 slices', t => {
     rimDrawSequence: [0, '#11ab12', 1, '#e22929', pi],
     isRimDown: true,
     scaleY: 0.5,
-    rimThickness: 30,
+    rimThickness: 20,
     cntx,
   };
   fillRim(argument);
@@ -79,7 +79,7 @@ tp('rim down, 3 slices', t => {
     rimDrawSequence: [0, '#11ab12', 1, '#e22929', 2.5, '#113fda', pi],
     isRimDown: true,
     scaleY: 0.5,
-    rimThickness: 30,
+    rimThickness: 20,
     cntx,
   };
   fillRim(argument);
@@ -107,7 +107,7 @@ tp('rim up, 1 slice', t => {
     rimDrawSequence: [0, '#11ab12', pi],
     isRimDown: false,
     scaleY: 0.5,
-    rimThickness: 30,
+    rimThickness: 20,
     cntx,
   };
   fillRim(argument);
@@ -135,7 +135,7 @@ tp('rim up, 2 slices', t => {
     rimDrawSequence: [0, '#11ab12', 5, '#e22929', pi],
     isRimDown: false,
     scaleY: 0.5,
-    rimThickness: 30,
+    rimThickness: 20,
     cntx,
   };
   fillRim(argument);
@@ -160,10 +160,10 @@ tp('rim up, 3 slices', t => {
     ox: canvWidth / 2,
     oy: canvHeight / 2,
     radius: (canvHeight - 100) / 2,
-    rimDrawSequence: [0, '#11ab12', 5, '#e22929', 4.5, '#113fda', pi],
+    rimDrawSequence: [0, '#11ab12', 5, '#e22929', 4, '#113fda', pi],
     isRimDown: false,
     scaleY: 0.5,
-    rimThickness: 30,
+    rimThickness: 20,
     cntx,
   };
   fillRim(argument);
