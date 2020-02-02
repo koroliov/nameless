@@ -2305,6 +2305,14 @@ tp('skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/F/F/F', t => {
   t.end();
 });
 
+//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/F/F/T SKIPPED
+//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/F/T/F SKIPPED
+//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/F/T/T SKIPPED
+//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/T/F/F SKIPPED
+//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/T/F/T SKIPPED
+//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/T/T/F SKIPPED
+//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/T/T/T SKIPPED
+
 tp('skipValidat is not present', t => {
   const mockCntx = {
     save: sinon.fake(),
@@ -2465,10 +2473,77 @@ tp('skipValidat is not present', t => {
   t.end();
 });
 
-//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/F/F/T SKIPPED
-//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/F/T/F SKIPPED
-//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/F/T/T SKIPPED
-//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/T/F/F SKIPPED
-//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/T/F/T SKIPPED
-//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/T/T/F SKIPPED
-//skipValidat, oneSlice, thickn0, scaleY1, strokeW0, T/F/T/T/T SKIPPED
+tp('invalid argument provided', t => {
+  const mockCntx = {
+    save: sinon.fake(),
+    restore: sinon.fake(),
+  }
+  const pieDeps = {
+    './validate-args': sinon.fake(),
+    './fill-optional-args': sinon.fake(),
+    './apply-context-state-changes': sinon.fake(),
+    './correct-oy-for-thickness': sinon.fake(),
+    './prepare-angles-n-colors/main': sinon.fake(),
+    './fill-face': sinon.fake(),
+    './stroke-face': sinon.fake(),
+    './create-rim-draw-sequence': sinon.fake(),
+    './fill-rim': sinon.fake(),
+    './stroke-rim': sinon.fake(),
+  };
+  const pie = proxyquire('pie/main', pieDeps);
+  const mockCntxConstructor = Symbol('mock cntx constructor');
+  const errorMsg = 'pie chart: invalid argument';
+  let mockConsoleError = sinon.fake();
+
+  pie(mockConsoleError, mockCntxConstructor);
+  t.equal(pieDeps['./validate-args'].callCount, 0);
+  t.equal(pieDeps['./fill-optional-args'].callCount, 0);
+  t.equal(pieDeps['./apply-context-state-changes'].callCount, 0);
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 0);
+  t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 0);
+  t.equal(pieDeps['./fill-face'].callCount, 0);
+  t.equal(pieDeps['./stroke-face'].callCount, 0);
+  t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
+  t.equal(pieDeps['./fill-rim'].callCount, 0);
+  t.equal(pieDeps['./stroke-rim'].callCount, 0);
+  t.equal(mockCntx.save.callCount, 0);
+  t.equal(mockCntx.restore.callCount, 0);
+  t.equal(mockConsoleError.callCount, 1);
+  t.deepEqual(mockConsoleError.getCall(0).args, [errorMsg]);
+
+  mockConsoleError = sinon.fake();
+  pie(mockConsoleError, mockCntxConstructor, {});
+  t.equal(pieDeps['./validate-args'].callCount, 0);
+  t.equal(pieDeps['./fill-optional-args'].callCount, 0);
+  t.equal(pieDeps['./apply-context-state-changes'].callCount, 0);
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 0);
+  t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 0);
+  t.equal(pieDeps['./fill-face'].callCount, 0);
+  t.equal(pieDeps['./stroke-face'].callCount, 0);
+  t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
+  t.equal(pieDeps['./fill-rim'].callCount, 0);
+  t.equal(pieDeps['./stroke-rim'].callCount, 0);
+  t.equal(mockCntx.save.callCount, 0);
+  t.equal(mockCntx.restore.callCount, 0);
+  t.equal(mockConsoleError.callCount, 1);
+  t.deepEqual(mockConsoleError.getCall(0).args, [errorMsg]);
+
+  mockConsoleError = sinon.fake();
+  pie(mockConsoleError, mockCntxConstructor, []);
+  t.equal(pieDeps['./validate-args'].callCount, 0);
+  t.equal(pieDeps['./fill-optional-args'].callCount, 0);
+  t.equal(pieDeps['./apply-context-state-changes'].callCount, 0);
+  t.equal(pieDeps['./correct-oy-for-thickness'].callCount, 0);
+  t.equal(pieDeps['./prepare-angles-n-colors/main'].callCount, 0);
+  t.equal(pieDeps['./fill-face'].callCount, 0);
+  t.equal(pieDeps['./stroke-face'].callCount, 0);
+  t.equal(pieDeps['./create-rim-draw-sequence'].callCount, 0);
+  t.equal(pieDeps['./fill-rim'].callCount, 0);
+  t.equal(pieDeps['./stroke-rim'].callCount, 0);
+  t.equal(mockCntx.save.callCount, 0);
+  t.equal(mockCntx.restore.callCount, 0);
+  t.equal(mockConsoleError.callCount, 1);
+  t.deepEqual(mockConsoleError.getCall(0).args, [errorMsg]);
+
+  t.end();
+});

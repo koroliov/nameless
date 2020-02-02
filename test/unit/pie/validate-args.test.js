@@ -3,12 +3,6 @@
 const tp = require('tape');
 const validateArgs = require('pie/validate-args');
 
-tp('validate argument type', t => {
-  t.plan(1);
-  const actualResult = validateArgs({});
-  t.equal(actualResult, 'pie chart: arguments must be instance of Map');
-});
-
 tp('check for unknown keys', t => {
   t.plan(1);
   const argument = getValidMandatoryArgumentsMap();

@@ -12,7 +12,10 @@ const fillRim = require('./fill-rim');
 const strokeRim = require('./stroke-rim');
 
 function main(consoleError, Context2dConstructor, map) {
-  if (map.has('skipValidation') && !map.get('skipValidation')) {
+  if (!(map instanceof Map)) {
+    consoleError('pie chart: invalid argument');
+    return;
+  } else if (map.has('skipValidation') && !map.get('skipValidation')) {
     const errorMsg = validateArgs(map, Context2dConstructor);
     if (errorMsg) {
       consoleError(errorMsg);
