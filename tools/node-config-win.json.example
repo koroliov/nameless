@@ -1,0 +1,27 @@
+{
+  "capabilities":
+  [
+    {
+      "browserName": "opera",
+      "platform": "WINDOWS",
+      "maxInstances": 1,
+      "seleniumProtocol": "WebDriver",
+      "webdriver.opera.driver": "operadriver.exe"
+    }
+  ],
+  "maxSession": 1,
+  "port": 4445,
+  "host": "192.168.xxx.xxx",
+  "register": true,
+  "registerCycle": 5000,
+  "hub": "http://192.168.xxx.xxx:4444",
+  "nodeStatusCheckTimeout": 5000,
+  "nodePolling": 5000,
+  "role": "node",
+  "unregisterIfStillDownAfter": 60000,
+  "downPollingLimit": 2,
+  "debug": false,
+  "servlets" : [],
+  "withoutServlets": [],
+  "custom": {}
+}

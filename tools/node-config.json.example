@@ -1,0 +1,34 @@
+{
+  "capabilities": [
+    {
+      "browserName": "firefox",
+      "platform": "LINUX",
+      "maxInstances": 1,
+      "seleniumProtocol": "WebDriver",
+      "marionette": true,
+      "webdriver.gecko.driver": "geckodriver-0.26.0"
+    },
+    {
+      "browserName": "chrome",
+      "platform": "LINUX",
+      "maxInstances": 1,
+      "seleniumProtocol": "WebDriver",
+      "webdriver.chrome.driver": "chromedriver-78.0.3904.70"
+    }
+  ],
+  "maxSession": 1,
+  "port": 4445,
+  "host": "192.168.xxx.xxx",
+  "hub": "http://192.168.xxx.xxx:4444",
+  "register": true,
+  "registerCycle": 5000,
+  "nodeStatusCheckTimeout": 5000,
+  "nodePolling": 5000,
+  "role": "node",
+  "unregisterIfStillDownAfter": 60000,
+  "downPollingLimit": 2,
+  "debug": true,
+  "servlets" : [],
+  "withoutServlets": [],
+  "custom": {}
+}

@@ -1,0 +1,17 @@
+these notes are just a reminder, it may be necessary to adjust the instructions
+to a different webdriver grid configuration. These are commands of how to setup
+the grid being used at the time of this writing: a linux hub, a linux node with
+Chrome and FF (both x64) and a windows x32 node with Opera
+
+on linux run java -jar SELENIUM.JAR -role hub
+on linux run java -Dwebdriver.gecko.driver=GECKODRIVER \
+  -Dwebdriver.chrome.driver=CHROMEDRIVER -jar SELENIUM.JAR -role node \
+  -nodeConfig NODE-CONFIG.JSON
+on windows run java -jar SELENIUM.JAR -role node -nodeConfig \
+  NODE-CONFIG-WIN.JSON
+it may be necessary to install VC_redist.x86.exe to run a node with opera on
+  windows
+on windows it's convenient to create a shortcut to the Command Prompt and set
+  the option to start in your test directory, and to add
+  '/k COMMAND_TO_START_NODE' to be able to start the node with a double-click on
+  the shortcut

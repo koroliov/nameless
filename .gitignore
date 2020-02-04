@@ -5,3 +5,6 @@ sandbox/*
 tools/*
 !tools/list.txt
 !tools/command-examples.txt
+!tools/e2e-infrastructure-setup.txt
+!tools/node-config.json.example
+!tools/node-config-win.json.example
