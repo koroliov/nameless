@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>e2e tests</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <link type="text/css" rel="stylesheet" href="css.css">
+</head>
+<body>
+  <div id="test-cases-wrapper">
+    <h6>test cases:</h6>
+    <ul id="ul">
+    </ul>
+  </div>
+  <div class="col">
+    <h2 class="act-exp-captions">actual (canvas)</h2>
+    <canvas id="canvas" width="400" height="300">
+    </canvas>
+  </div>
+  <div class="col">
+    <h2 class="act-exp-captions">expected (image)</h2>
+    <img id="image" width="400" height="300" alt="expected view" src="#">
+  </div>
+  <script src="../../build/charts-3d.js"></script>
+  <script src="setup-cases.js"></script>
+</body>
+</html>

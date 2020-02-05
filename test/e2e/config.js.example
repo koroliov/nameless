@@ -1,0 +1,15 @@
+'use strict';
+
+module.exports = {
+  projectBaseDir: '/home/dk-work/charts/',
+  logLevel: 'warn',
+  firefox: {
+    url: 'file:///home/dk-work/charts/test/e2e/html.html',
+  },
+  chrome: {
+    url: 'file:///home/dk-work/charts/test/e2e/html.html',
+  },
+  opera: {
+    url: 'http://10.0.0.1/html.html',
+  },
+};

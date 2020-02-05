@@ -8,3 +8,4 @@ tools/*
 !tools/e2e-infrastructure-setup.txt
 !tools/node-config.json.example
 !tools/node-config-win.json.example
+test/e2e/config.js
