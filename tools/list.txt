@@ -15,11 +15,10 @@ https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.
 from https://github.com/mozilla/geckodriver/releases/tag/v0.26.0
 works for at least linux firefox versions x64 70.0-72.0.2
 
-chromedriver-78.0.3904.70
-https://chromedriver.storage.googleapis.com/index.html?path=78.0.3904.70/
+chromedriver
+https://chromedriver.storage.googleapis.com/80.0.3987.16/chromedriver_linux64.zip
 from https://sites.google.com/a/chromium.org/chromedriver/
-works for at least linux chrome versions (Official Build) (64-bit)
-  78.0.3904.87-79.0.3945.130
+works for at least linux chrome versions (Official Build) (64-bit) 80
 
 operadriver.exe
 https://github.com/operasoftware/operachromiumdriver/releases/download/v.79.0.3945.79/operadriver_win32.zip
