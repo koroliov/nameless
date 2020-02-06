@@ -1,39 +1,42 @@
 'use strict';
 
-function validateArgs(args, GlobalCanvas2dContextConstructor) {
-  if (!(args instanceof Map)) {
-    return 'pie chart: arguments must be instance of Map';
+function validateArgument(map, GlobalCanvas2dContextConstructor) {
+  if (!(map instanceof Map)) {
+    return 'pie chart: argument must be instance of Map';
+  }
+  if (!map.has('validateOptions') || map.get('validateOptions') === false) {
+    return '';
   }
 
   const twoPi = 2 * Math.PI;
-  const argumentsNamesAndValidations = new Map([
-    ['percents', (propName) => !Array.isArray(args.get(propName))],
-    ['colors', (propName) => !Array.isArray(args.get(propName))],
-    ['skipValidation', propName => false],
-    ['ox', propName => !Number.isFinite(args.get(propName))],
-    ['oy', propName => !Number.isFinite(args.get(propName))],
+  const optionsNamesAndValidations = new Map([
+    ['percents', propName => !Array.isArray(map.get(propName))],
+    ['colors', propName => !Array.isArray(map.get(propName))],
+    ['validateOptions', () => false],
+    ['centerX', propName => !Number.isFinite(map.get(propName))],
+    ['centerY', propName => !Number.isFinite(map.get(propName))],
     ['radius', propName => {
-      const val = args.get(propName);
+      const val = map.get(propName);
       return !Number.isFinite(val) || val <= 0;
     }],
     ['thickness', propName => {
-      const val = args.get(propName);
+      const val = map.get(propName);
       return !Number.isFinite(val) || val < 0
     }],
     ['strokeWidth', propName => {
-      const val = args.get(propName);
+      const val = map.get(propName);
       return !Number.isFinite(val) || val < 0
     }],
     ['strokeColor', propName => {
-      if (args.get('strokeWidth') !== 0) {
-        const val = args.get(propName);
+      if (map.get('strokeWidth') !== 0) {
+        const val = map.get(propName);
         return typeof val !== 'string' || val === '';
       } else {
         return false;
       }
     }],
     ['cntx', propName => {
-      const val = args.get(propName);
+      const val = map.get(propName);
       if (typeof val !== 'object' || val === null) {
         return true;
       } else {
@@ -42,47 +45,46 @@ function validateArgs(args, GlobalCanvas2dContextConstructor) {
       }
     }],
     ['scaleY', propName => {
-      const val = args.get(propName);
-      return args.has(propName) &&
+      const val = map.get(propName);
+      return map.has(propName) &&
           (!Number.isFinite(val) || val <= 0 || val > 1);
     }],
     ['rotationAngle', propName => {
-      const val = args.get(propName);
-      return args.has(propName) &&
+      const val = map.get(propName);
+      return map.has(propName) &&
           (!Number.isFinite(val) || val <= -twoPi || val >= twoPi);
     }],
     ['startAngle', propName => {
-      const val = args.get(propName);
-      return args.has(propName) &&
+      const val = map.get(propName);
+      return map.has(propName) &&
           (!Number.isFinite(val) || val < 0 || val >= twoPi);
     }],
     ['counterClockwise', propName => {
-      return args.has(propName) && typeof args.get(propName) !== 'boolean';
+      return map.has(propName) && typeof map.get(propName) !== 'boolean';
     }],
     ['isRimDown', propName => {
-      return args.has(propName) && typeof args.get(propName) !== 'boolean';
+      return map.has(propName) && typeof map.get(propName) !== 'boolean';
     }],
-    ['skipValidation', () => false],
   ]);
 
-  for (const key of args.keys()) {
-    if (!argumentsNamesAndValidations.has(key)) {
-      return  'pie chart: arguments map contains unknown key';
+  for (const key of map.keys()) {
+    if (!optionsNamesAndValidations.has(key)) {
+      return  'pie chart: argument map contains unknown key';
     }
   }
 
-  for (const [propName, isInvalid] of argumentsNamesAndValidations) {
+  for (const [propName, isInvalid] of optionsNamesAndValidations) {
     if (isInvalid(propName)) {
       return 'pie chart: invalid or absent ' + propName;
     }
   }
 
-  return hasErrorInColorsOrPercents(args) || '';
+  return hasErrorInColorsOrPercents(map) || '';
 }
 
-function hasErrorInColorsOrPercents(args) {
-  const percents = args.get('percents');
-  const colors = args.get('colors');
+function hasErrorInColorsOrPercents(map) {
+  const percents = map.get('percents');
+  const colors = map.get('colors');
   if (percents.length !== colors.length) {
     return 'pie chart: different ammount of colors/percents';
   }
@@ -106,4 +108,4 @@ function hasErrorInColorsOrPercents(args) {
   }
 }
 
-module.exports = validateArgs;
+module.exports = validateArgument;
