@@ -1,6 +1,6 @@
 'use strict';
 
-function createData(map) {
+function create(map) {
   const dataWithOptionalValues = new Map([
     ['scaleY', 0],
     ['rotationAngle', 0],
@@ -16,4 +16,4 @@ function createData(map) {
   return dataWithOptionalValues;
 }
 
-module.exports = createData;
+module.exports = create;
