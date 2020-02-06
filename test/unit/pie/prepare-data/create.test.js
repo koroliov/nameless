@@ -4,9 +4,12 @@ const tp = require('tape');
 const create = require('pie/prepare-data/create');
 
 tp('fills absent optional arguments, and nothing more', t => {
-  const argument = new Map();
+  const argument = new Map([
+    ['some property', null],
+  ]);
   const data = create(argument);
   const expected = new Map([
+    ['some property', null],
     ['scaleY', 0],
     ['rotationAngle', 0],
     ['startAngle', 3 * Math.PI],
@@ -20,6 +23,7 @@ tp('fills absent optional arguments, and nothing more', t => {
 
 tp('does not change provided optional arguments', t => {
   const argument = new Map([
+    ['some property', null],
     ['scaleY', undefined],
     ['rotationAngle', undefined],
     ['startAngle', undefined],
