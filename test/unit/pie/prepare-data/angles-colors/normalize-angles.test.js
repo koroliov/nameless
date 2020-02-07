@@ -34,8 +34,8 @@ tp('angles in (-2Pi, 4Pi) range normalized to [0, 2Pi)', t => {
   t.end();
 });
 
-tp('first and last not touched, since they are startAngle, ' +
-  'which must be already in the range', t => {
+tp(`first and last not touched, since they are startAngle, which must be already
+in the range`, t => {
   const angles = [
     -11,
     2,

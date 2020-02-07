@@ -4,8 +4,8 @@ const tp = require('tape');
 const proxyquire = require('proxyquire').noCallThru();
 const sinon = require('sinon');
 
-tp('takes data, filters 0%, calculates/normalizes angles, ' +
-  'does not change data by itself', t => {
+tp(`takes data, filters 0%, calculates/normalizes angles, does not change data
+by itself`, t => {
   const data = new Map([
     ['colors', ['col 1', 'col 2']],
   ]);
@@ -46,8 +46,8 @@ tp('takes data, filters 0%, calculates/normalizes angles, ' +
   t.end();
 });
 
-tp('in case of 100% present it does not calculate angles, ' +
-  'does not change data by itself', t => {
+tp(`in case of 100% present it does not calculate angles, does not change data
+by itself`, t => {
   const data = new Map([
     ['colors', ['col 1', 'col 2']],
   ]);
