@@ -1,6 +1,9 @@
 'use strict';
 
-function calcAnglesFromPercents({percents, startAngle, counterClockwise}) {
+function calcAnglesFromPercents(data) {
+  const percents = data.get('percents');
+  const startAngle = data.get('startAngle');
+  const counterClockwise = data.get('counterClockwise');
   const onePercentAngle = Math.PI / 50;
   const angles = [startAngle];
 
@@ -15,7 +18,7 @@ function calcAnglesFromPercents({percents, startAngle, counterClockwise}) {
   }
   angles.push(startAngle);
 
-  return angles;
+  return data.set('angles', angles);
 }
 
 module.exports = calcAnglesFromPercents;
