@@ -1,6 +1,7 @@
 'use strict';
 
-function normalizeAngles(angles) {
+function normalizeAngles(map) {
+  const angles = map.get('angles');
   const twoPi = 2 * Math.PI;
   for (let i = 1; i < angles.length - 1; i++) {
     if (angles[i] < 0) {
@@ -9,7 +10,6 @@ function normalizeAngles(angles) {
       angles[i] = angles[i] - twoPi;
     }
   }
-  return angles;
 }
 
 module.exports = normalizeAngles;

@@ -1,10 +1,11 @@
 'use strict';
 
 const tp = require('tape');
-const normalizeAngles = require('pie/prepare-angles-n-colors/normalize-angles');
+const sinon = require('sinon');
+const normalizeAngles =
+    require('pie/prepare-data/angles-colors/normalize-angles');
 
 tp('angles in (-2Pi, 4Pi) range normalized to [0, 2Pi)', t => {
-  t.plan(2);
   const angles = [
     0,
     2,
@@ -25,14 +26,16 @@ tp('angles in (-2Pi, 4Pi) range normalized to [0, 2Pi)', t => {
     0.009999999999999787,
     1,
   ];
-  const actualNormAngles = normalizeAngles(angles);
-  t.deepEqual(actualNormAngles, expectedNormAngles);
-  t.equal(actualNormAngles, angles);
+  const data = new Map([
+    ['angles', angles]
+  ]);
+  normalizeAngles(data);
+  t.deepEqual(data.get('angles'), expectedNormAngles);
+  t.end();
 });
 
 tp('first and last not touched, since they are startAngle, ' +
-  'which must be already in range', t => {
-  t.plan(1);
+  'which must be already in the range', t => {
   const angles = [
     -11,
     2,
@@ -47,6 +50,26 @@ tp('first and last not touched, since they are startAngle, ' +
     1,
     11,
   ];
-  const actualNormAngles = normalizeAngles(angles);
-  t.deepEqual(angles, actualNormAngles);
+  const data = new Map([
+    ['angles', angles]
+  ]);
+  normalizeAngles(data);
+  t.deepEqual(data.get('angles'), expectedNormAngles);
+  t.end();
+});
+
+tp('data properties are ot changed', t => {
+  const angles = [
+    -11,
+    2,
+    1,
+    11,
+  ];
+  const data = new Map([
+    ['angles', angles]
+  ]);
+  const spy = sinon.spy(data, 'set');
+  normalizeAngles(data);
+  t.equal(spy.callCount, 0);
+  t.end();
 });
