@@ -1,6 +1,7 @@
 'use strict';
 
 const tp = require('tape');
+const sinon = require('sinon');
 const validateArgument = require('pie/validate-argument');
 
 tp('returns an error if the argument is not a map', t => {
@@ -28,6 +29,18 @@ tp('validateOptions is optional, default is false', t => {
   const argument = new Map();
   const result = validateArgument(argument, MockGlobalCanvasContext2d);
   t.equal(result, '');
+  t.end();
+});
+
+tp('it does not change the provided map in any way', t => {
+  const argument = getValidatableValidMandatoryArgumentsMap();
+  const spySet = sinon.spy(argument, 'set');
+  const spyDelete = sinon.spy(argument, 'delete');
+  const spyClear = sinon.spy(argument, 'clear');
+  validateArgument(argument, MockGlobalCanvasContext2d);
+  t.equal(spySet.callCount, 0);
+  t.equal(spyDelete.callCount, 0);
+  t.equal(spyClear.callCount, 0);
   t.end();
 });
 
