@@ -2,11 +2,14 @@
 
 const pi = Math.PI;
 
-function createRimDrawSequence(args) {
-  const {normalizedAngles, colors, isRimDown, counterClockwise} = args;
-  const mergedAnglesColors = mergeAnglesColors(normalizedAngles, colors);
+function createRimDrawSequence(data) {
+  const angles = data.get('angles');
+  const colors = data.get('colors');
+  const isRimDown = data.get('isRimDown');
+  const counterClockwise = data.get('counterClockwise');
+  const mergedAnglesColors = mergeAnglesColors(angles, colors);
   const indOfAngleBehindZero =
-      findIndOfFirstAngleBehindZero(normalizedAngles, isRimDown);
+      findIndOfFirstAngleBehindZero(angles, isRimDown);
 
   const orderedSeq = createOrderedSequenceFromBehind0ToPi(
       mergedAnglesColors, indOfAngleBehindZero, counterClockwise);
@@ -18,7 +21,7 @@ function createRimDrawSequence(args) {
     rimDrawSequence = createDrawSeqForRimUp(orderedSeq);
   }
 
-  return rimDrawSequence;
+  data.set('rimDrawSequence', rimDrawSequence);
 }
 
 function createDrawSeqForRimUp(orderedSeq) {
@@ -79,25 +82,25 @@ function createOrderedSequenceFromBehind0ToPi(
   return orderedSeq;
 }
 
-function mergeAnglesColors(normalizedAngles, colors) {
+function mergeAnglesColors(angles, colors) {
   const merged = [];
-  colors.forEach((el, i) => merged.push(normalizedAngles[i], colors[i]));
-  merged.push(normalizedAngles[normalizedAngles.length - 1]);
+  colors.forEach((el, i) => merged.push(angles[i], colors[i]));
+  merged.push(angles[angles.length - 1]);
   return merged;
 }
 
-function findIndOfFirstAngleBehindZero(normalizedAngles, isRimDown) {
+function findIndOfFirstAngleBehindZero(angles, isRimDown) {
   let index = 0;
-  for (let i = 0; i < normalizedAngles.length - 1; i++) {
-    if (normalizedAngles[i] === 0) {
+  for (let i = 0; i < angles.length - 1; i++) {
+    if (angles[i] === 0) {
       index = i;
       break;
     }
     if (isRimDown) {
-      if (normalizedAngles[i] > normalizedAngles[index]) {
+      if (angles[i] > angles[index]) {
         index = i;
       }
-    } else if (normalizedAngles[i] < normalizedAngles[index]) {
+    } else if (angles[i] < angles[index]) {
       index = i;
     }
   }
