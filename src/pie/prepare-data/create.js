@@ -1,19 +1,22 @@
 'use strict';
 
 function create(map) {
-  const dataWithOptionalValues = new Map([
+  const optionalProperties = new Map([
     ['scaleY', 0],
     ['rotationAngle', 0],
     ['startAngle', 3 * Math.PI / 2],
     ['counterClockwise', false],
     ['isRimDown', true],
   ]);
-  for (const [key] of dataWithOptionalValues) {
-    if (map.has(key)) {
-      dataWithOptionalValues.set(key, map.get(key));
+  const data = new Map(map);
+  data.set('percents', Array.from(map.get('percents')));
+  data.set('colors', Array.from(map.get('colors')));
+  for (const [key, value] of optionalProperties) {
+    if (!data.has(key)) {
+      data.set(key, value);
     }
   }
-  return dataWithOptionalValues;
+  return data;
 }
 
 module.exports = create;
