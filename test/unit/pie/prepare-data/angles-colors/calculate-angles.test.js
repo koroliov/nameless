@@ -116,10 +116,14 @@ tp('it does not change data, except setting angles', t => {
     ['startAngle', startAngle],
     ['percents', percents],
   ]);
-  const spy = sinon.spy(data, 'set');
+  const spySet = sinon.spy(data, 'set');
+  const spyDelete = sinon.spy(data, 'delete');
+  const spyClear = sinon.spy(data, 'clear');
   calculateAngles(data);
-  t.equal(spy.callCount, 1);
-  t.equal(spy.getCall(0).args.length, 2);
-  t.equal(spy.getCall(0).args[0], 'angles');
+  t.equal(spySet.callCount, 1);
+  t.equal(spySet.getCall(0).args.length, 2);
+  t.equal(spySet.getCall(0).args[0], 'angles');
+  t.equal(spyDelete.callCount, 0);
+  t.equal(spyClear.callCount, 0);
   t.end();
 });

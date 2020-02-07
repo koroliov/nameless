@@ -68,8 +68,12 @@ tp('data properties are ot changed', t => {
   const data = new Map([
     ['angles', angles]
   ]);
-  const spy = sinon.spy(data, 'set');
+  const spySet = sinon.spy(data, 'set');
+  const spyDelete = sinon.spy(data, 'delete');
+  const spyClear = sinon.spy(data, 'clear');
   normalizeAngles(data);
-  t.equal(spy.callCount, 0);
+  t.equal(spySet.callCount, 0);
+  t.equal(spyDelete.callCount, 0);
+  t.equal(spyClear.callCount, 0);
   t.end();
 });
