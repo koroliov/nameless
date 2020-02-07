@@ -10,6 +10,7 @@ tp('filters zero percent values and corresponding colors', t => {
     ['percents', [0, 20, 0, 80, 0]],
   ]);
   filterZeroPercents(data);
+  t.equal(data.size, 2);
   t.deepEqual(data.get('percents'), [20, 80]);
   t.deepEqual(data.get('colors'), ['col 1', 'col 3']);
   t.end();
