@@ -6,8 +6,7 @@ const {createCanvas} = require('canvas');
 const face = require('pie/stroke/face.js');
 //const wr = require('dev-utils/write-png-file-from-base-64');
 
-tp(`strokes a charted circle, clockwise, it does not change
-the data`, t => {
+tp(`strokes a charted circle, clockwise, it does not change the data`, t => {
   const canvWidth = 400;
   const canvHeight = 300;
   const canvas = createCanvas(canvWidth, canvHeight);
