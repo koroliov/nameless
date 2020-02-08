@@ -12,6 +12,7 @@ function main(argument) {
   if (isRimPresent()) {
     createRimDrawSequence(data);
   }
+
   function isRimPresent() {
     return !(data.get('thickness') === 0 || data.get('scaleY') === 1);
   }
