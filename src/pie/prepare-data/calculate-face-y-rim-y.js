@@ -10,11 +10,11 @@ function calculateFaceYRimY(data) {
   let faceY;
   let rimY;
   if (isRimDown) {
-    faceY =  centerY + differenceInYCoordinate;
-    rimY =  centerY - differenceInYCoordinate;
-  } else {
     faceY =  centerY - differenceInYCoordinate;
     rimY =  centerY + differenceInYCoordinate;
+  } else {
+    faceY =  centerY + differenceInYCoordinate;
+    rimY =  centerY - differenceInYCoordinate;
   }
   data.set('faceY', faceY);
   data.set('rimY', rimY);

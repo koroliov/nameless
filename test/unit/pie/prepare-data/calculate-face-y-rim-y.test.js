@@ -54,8 +54,8 @@ tp('scaleY1, thickn0, isRimDown, centerY (neg/0/pos) F/F/F/neg', t => {
   ]);
   calculateFaceYRimY(data);
   const differenceInYCoordinate = 20 * Math.sqrt(1 - 0.5 * 0.5) / 2 / 0.5;
-  t.equal(data.get('faceY'), -10 - differenceInYCoordinate);
-  t.equal(data.get('rimY'), -10 + differenceInYCoordinate);
+  t.equal(data.get('faceY'), -10 + differenceInYCoordinate);
+  t.equal(data.get('rimY'), -10 - differenceInYCoordinate);
   t.end();
 });
 
@@ -68,8 +68,8 @@ tp('scaleY1, thickn0, isRimDown, centerY (neg/0/pos) F/F/F/0', t => {
   ]);
   calculateFaceYRimY(data);
   const differenceInYCoordinate = 20 * Math.sqrt(1 - 0.5 * 0.5) / 2 / 0.5;
-  t.equal(data.get('faceY'), 0 - differenceInYCoordinate);
-  t.equal(data.get('rimY'), 0 + differenceInYCoordinate);
+  t.equal(data.get('faceY'), 0 + differenceInYCoordinate);
+  t.equal(data.get('rimY'), 0 - differenceInYCoordinate);
   t.end();
 });
 
@@ -82,8 +82,8 @@ tp('scaleY1, thickn0, isRimDown, centerY (neg/0/pos) F/F/F/pos', t => {
   ]);
   calculateFaceYRimY(data);
   const differenceInYCoordinate = 20 * Math.sqrt(1 - 0.5 * 0.5) / 2 / 0.5;
-  t.equal(data.get('faceY'), 10 - differenceInYCoordinate);
-  t.equal(data.get('rimY'), 10 + differenceInYCoordinate);
+  t.equal(data.get('faceY'), 10 + differenceInYCoordinate);
+  t.equal(data.get('rimY'), 10 - differenceInYCoordinate);
   t.end();
 });
 
@@ -96,8 +96,8 @@ tp('scaleY1, thickn0, isRimDown, centerY (neg/0/pos) F/F/T/neg', t => {
   ]);
   calculateFaceYRimY(data);
   const differenceInYCoordinate = 20 * Math.sqrt(1 - 0.5 * 0.5) / 2 / 0.5;
-  t.equal(data.get('faceY'), -10 + differenceInYCoordinate);
-  t.equal(data.get('rimY'), -10 - differenceInYCoordinate);
+  t.equal(data.get('faceY'), -10 - differenceInYCoordinate);
+  t.equal(data.get('rimY'), -10 + differenceInYCoordinate);
   t.end();
 });
 
@@ -110,8 +110,8 @@ tp('scaleY1, thickn0, isRimDown, centerY (neg/0/pos) F/F/T/0', t => {
   ]);
   calculateFaceYRimY(data);
   const differenceInYCoordinate = 20 * Math.sqrt(1 - 0.5 * 0.5) / 2 / 0.5;
-  t.equal(data.get('faceY'), 0 + differenceInYCoordinate);
-  t.equal(data.get('rimY'), 0 - differenceInYCoordinate);
+  t.equal(data.get('faceY'), 0 - differenceInYCoordinate);
+  t.equal(data.get('rimY'), 0 + differenceInYCoordinate);
   t.end();
 });
 
@@ -124,8 +124,8 @@ tp('scaleY1, thickn0, isRimDown, centerY (neg/0/pos) F/F/T/pos', t => {
   ]);
   calculateFaceYRimY(data);
   const differenceInYCoordinate = 20 * Math.sqrt(1 - 0.5 * 0.5) / 2 / 0.5;
-  t.equal(data.get('faceY'), 10 + differenceInYCoordinate);
-  t.equal(data.get('rimY'), 10 - differenceInYCoordinate);
+  t.equal(data.get('faceY'), 10 - differenceInYCoordinate);
+  t.equal(data.get('rimY'), 10 + differenceInYCoordinate);
   t.end();
 });
 
