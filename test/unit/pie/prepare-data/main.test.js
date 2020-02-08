@@ -21,7 +21,9 @@ itself`, t => {
     './create-rim-draw-sequence': sinon.fake(),
   };
   const main = proxyquire('pie/prepare-data/main', mainDeps);
-  main(argument);
+  const retVal = main(argument);
+
+  t.equal(retVal, data);
 
   t.equal(mainDeps['./create'].callCount, 1);
   const createCall = mainDeps['./create'].getCall(0);
@@ -74,7 +76,9 @@ does not change data by itself`, t => {
     './create-rim-draw-sequence': sinon.fake(),
   };
   const main = proxyquire('pie/prepare-data/main', mainDeps);
-  main(argument);
+  const retVal = main(argument);
+
+  t.equal(retVal, data);
 
   t.equal(mainDeps['./create'].callCount, 1);
   const createCall = mainDeps['./create'].getCall(0);
@@ -121,7 +125,9 @@ does not change data by itself`, t => {
     './create-rim-draw-sequence': sinon.fake(),
   };
   const main = proxyquire('pie/prepare-data/main', mainDeps);
-  main(argument);
+  const retVal = main(argument);
+
+  t.equal(retVal, data);
 
   t.equal(mainDeps['./create'].callCount, 1);
   const createCall = mainDeps['./create'].getCall(0);
@@ -168,7 +174,9 @@ the rimDrawSequence, does not change data by itself`, t => {
     './create-rim-draw-sequence': sinon.fake(),
   };
   const main = proxyquire('pie/prepare-data/main', mainDeps);
-  main(argument);
+  const retVal = main(argument);
+
+  t.equal(retVal, data);
 
   t.equal(mainDeps['./create'].callCount, 1);
   const createCall = mainDeps['./create'].getCall(0);

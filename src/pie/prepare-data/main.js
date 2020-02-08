@@ -16,6 +16,7 @@ function main(argument) {
   function isRimPresent() {
     return !(data.get('thickness') === 0 || data.get('scaleY') === 1);
   }
+  return data;
 }
 
 module.exports = main;
