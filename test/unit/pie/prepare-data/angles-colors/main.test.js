@@ -39,6 +39,7 @@ by itself`, t => {
   t.equal(normalizeAnglesCall.calledImmediatelyAfter(calculateAnglesCall),
       true);
 
+  t.deepEqual(data.get('colors'), ['col 1', 'col 2']);
   t.equal(spySet.callCount, 0);
   t.equal(spyDelete.callCount, 0);
   t.equal(spyClear.callCount, 0);
@@ -72,6 +73,7 @@ by itself`, t => {
   t.equal(mainDeps['./calculate-angles'].callCount, 0);
   t.equal(mainDeps['./normalize-angles'].callCount, 0);
 
+  t.deepEqual(data.get('colors'), ['col 1']);
   t.equal(spySet.callCount, 1, 'the one from the filterZeroPercents spy');
   t.equal(spyDelete.callCount, 0);
   t.equal(spyClear.callCount, 0);

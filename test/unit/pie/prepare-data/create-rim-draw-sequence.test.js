@@ -2090,6 +2090,8 @@ tp('it does not change the data, except for setting rimDrawSequence', t => {
   const spyDelete = sinon.spy(data, 'delete');
   const spyClear = sinon.spy(data, 'clear');
   createRimDrawSequence(data);
+  t.deepEqual(data.get('colors'), ['col 1', 'col 2']);
+  t.deepEqual(data.get('angles'), [5, 4, 5]);
   t.equal(spySet.callCount, 1, 'to set rimDrawSequence');
   t.equal(spyDelete.callCount, 0);
   t.equal(spyClear.callCount, 0);

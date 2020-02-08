@@ -34,10 +34,14 @@ tp('validateOptions is optional, default is false', t => {
 
 tp('it does not change the provided map in any way', t => {
   const argument = getValidatableValidMandatoryArgumentsMap();
+  const originalColors = Array.from(argument.get('colors'));
+  const originalPercents = Array.from(argument.get('percents'));
   const spySet = sinon.spy(argument, 'set');
   const spyDelete = sinon.spy(argument, 'delete');
   const spyClear = sinon.spy(argument, 'clear');
   validateArgument(argument, MockGlobalCanvasContext2d);
+  t.deepEqual(argument.get('colors'), originalColors);
+  t.deepEqual(argument.get('percents'), originalPercents);
   t.equal(spySet.callCount, 0);
   t.equal(spyDelete.callCount, 0);
   t.equal(spyClear.callCount, 0);
