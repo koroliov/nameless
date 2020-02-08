@@ -6,20 +6,23 @@ window.charts3d = {
     .bind(undefined, console.error, CanvasRenderingContext2D),
 };
 
-},{"./pie/main.js":8}],2:[function(require,module,exports){
+},{"./pie/main.js":6}],2:[function(require,module,exports){
 'use strict';
 
-function applyContextStateChanges(args) {
-  const {cntx, ox, oy, strokeColor, strokeWidth, rotationAngle, scaleY} = args;
+function applyContextStateChanges(data) {
+  const cntx = data.get('cntx');
+  const centerX = data.get('centerX');
+  const centerY = data.get('centerY');
+  const strokeWidth = data.get('strokeWidth');
+
   if (strokeWidth !== 0) {
-    cntx.strokeStyle = strokeColor;
+    cntx.strokeStyle = data.get('strokeColor');
     cntx.lineWidth = strokeWidth;
   }
-
-  cntx.translate(ox, oy);
-  cntx.rotate(rotationAngle);
-  cntx.scale(1, scaleY);
-  cntx.translate(-ox, -oy);
+  cntx.translate(centerX, centerY);
+  cntx.rotate(data.get('rotationAngle'));
+  cntx.scale(1, data.get('scaleY'));
+  cntx.translate(-centerX, -centerY);
 }
 
 module.exports = applyContextStateChanges;
@@ -27,27 +30,262 @@ module.exports = applyContextStateChanges;
 },{}],3:[function(require,module,exports){
 'use strict';
 
-function correctOyForThickness(map) {
-  const scaleY = map.get('scaleY');
-  const oy = map.get('oy');
-  const thickness = map.get('thickness');
-  const isRimDown = map.get('isRimDown');
-  const oyChangeAbs = thickness * Math.sqrt(1 - scaleY * scaleY) / 2 / scaleY;
-  map.set('oy', isRimDown ? -oyChangeAbs + oy : oyChangeAbs + oy);
+function face(data) {
+  const centerX = data.get('centerX');
+  const faceY = data.get('faceY');
+  const radius = data.get('radius');
+  const cntx = data.get('cntx');
+  const angles = data.get('angles');
+  const colors = data.get('colors');
+  const originalFillStyle = cntx.fillStyle;
+  if (colors.length === 1) {
+    cntx.beginPath();
+    cntx.arc(centerX, faceY, radius, 0, 2 * Math.PI);
+    cntx.fillStyle = colors[0];
+    cntx.fill();
+  } else {
+    for (let i = 1; i < angles.length; i++) {
+      cntx.beginPath();
+      cntx.arc(centerX, faceY, radius, angles[i - 1], angles[i],
+          data.get('counterClockwise'));
+      cntx.lineTo(centerX, faceY);
+      cntx.closePath();
+      cntx.fillStyle = colors[i - 1];
+      cntx.fill();
+    }
+  }
+  cntx.fillStyle = originalFillStyle;
 }
 
-module.exports = correctOyForThickness;
+module.exports = face;
 
 },{}],4:[function(require,module,exports){
 'use strict';
 
+const face = require('./face');
+const rim = require('./rim');
+
+function main(data) {
+  face(data);
+  if (isRimPresent()) {
+    rim(data);
+  }
+
+  function isRimPresent() {
+    return data.has('rimDrawSequence');
+  }
+}
+
+module.exports = main;
+
+},{"./face":3,"./rim":5}],5:[function(require,module,exports){
+'use strict';
+
+function rim(data) {
+  const centerX = data.get('centerX');
+  const faceY = data.get('faceY');
+  const rimY = data.get('rimY');
+  const radius = data.get('radius');
+  const rimDrawSequence = data.get('rimDrawSequence');
+  const isRimDown = data.get('isRimDown');
+  const cntx = data.get('cntx');
+  const originalFillStyle = cntx.fillStyle;
+
+  let baseArcCounterClockwise;
+  let rimArcCounterClockwise;
+  if (isRimDown) {
+    baseArcCounterClockwise = false;
+    rimArcCounterClockwise = true;
+  } else {
+    baseArcCounterClockwise = true;
+    rimArcCounterClockwise = false;
+  }
+  const thicknessScaled = faceY - rimY;
+  let startX = centerX + radius;
+  let startY = faceY;
+  let startYRim;
+  let endX;
+  let endY;
+  let i;
+
+  for (i = 1; i < rimDrawSequence.length; i += 2) {
+    fillInnerPartOfSlice();
+    startX = endX;
+    startY = endY;
+  }
+
+  cntx.fillStyle = originalFillStyle;
+
+  function fillInnerPartOfSlice() {
+    cntx.beginPath();
+    cntx.moveTo(startX, startY);
+    startYRim = startY + thicknessScaled;
+    cntx.lineTo(startX, startYRim);
+    cntx.arc(centerX, rimY, radius, rimDrawSequence[i - 1],
+        rimDrawSequence[i + 1], baseArcCounterClockwise);
+    endX = Math.cos(rimDrawSequence[i + 1]) * radius + centerX;
+    endY = Math.sin(rimDrawSequence[i + 1]) * radius + faceY;
+    cntx.arc(centerX, faceY, radius, rimDrawSequence[i + 1],
+        rimDrawSequence[i - 1], rimArcCounterClockwise);
+    cntx.fillStyle = rimDrawSequence[i];
+    cntx.fill();
+  }
+}
+
+module.exports = rim;
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
+const validateArgument = require('./validate-argument');
+const prepareData = require('./prepare-data/main');
+const applyContextStateChanges = require('./apply-context-state-changes');
+const fill = require('./fill/main');
+const stroke = require('./stroke/main');
+
+function main(consoleError, Context2dConstructor, argument) {
+  const errorMsg = validateArgument(argument, Context2dConstructor);
+  if (errorMsg) {
+    consoleError(errorMsg);
+    return;
+  }
+
+  const data = prepareData(argument);
+  const cntx = data.get('cntx');
+  cntx.save();
+  applyContextStateChanges(data);
+  fill(data);
+  if (data.get('strokeWidth') !== 0) {
+    stroke(data);
+  }
+  cntx.restore();
+}
+
+module.exports = main;
+
+},{"./apply-context-state-changes":2,"./fill/main":4,"./prepare-data/main":14,"./stroke/main":16,"./validate-argument":18}],7:[function(require,module,exports){
+'use strict';
+
+function calculateAngles(data) {
+  const percents = data.get('percents');
+  const startAngle = data.get('startAngle');
+  const counterClockwise = data.get('counterClockwise');
+  const onePercentAngle = Math.PI / 50;
+  const angles = [startAngle];
+
+  if (counterClockwise) {
+    for (let i = 0; i < percents.length - 1; i++) {
+      angles.push(angles[i] - onePercentAngle * percents[i]);
+    }
+  } else {
+    for (let i = 0; i < percents.length - 1; i++) {
+      angles.push(angles[i] + onePercentAngle * percents[i]);
+    }
+  }
+  angles.push(startAngle);
+  data.set('angles', angles);
+}
+
+module.exports = calculateAngles;
+
+},{}],8:[function(require,module,exports){
+'use strict';
+
+function filterZeroPercents(data) {
+  const colors = data.get('colors');
+  const filteredColors = [];
+  const filteredPercents = data.get('percents').filter((el, i) => {
+    if (el !== 0) {
+      filteredColors.push(colors[i]);
+      return true;
+    }
+    return false;
+  });
+  data.set('percents', filteredPercents);
+  data.set('colors', filteredColors);
+  return data;
+}
+
+module.exports = filterZeroPercents;
+
+},{}],9:[function(require,module,exports){
+'use strict';
+
+const filterZeroPercents = require('./filter-zero-percents');
+const calculateAngles = require('./calculate-angles');
+const normalizeAngles = require('./normalize-angles');
+
+function main(data) {
+  filterZeroPercents(data);
+  if (data.get('colors').length !== 1) {
+    calculateAngles(data);
+    normalizeAngles(data);
+  }
+}
+
+module.exports = main;
+
+},{"./calculate-angles":7,"./filter-zero-percents":8,"./normalize-angles":10}],10:[function(require,module,exports){
+'use strict';
+
+function normalizeAngles(map) {
+  const angles = map.get('angles');
+  const twoPi = 2 * Math.PI;
+  for (let i = 1; i < angles.length - 1; i++) {
+    if (angles[i] < 0) {
+      angles[i] = twoPi + angles[i];
+    } else if (angles[i] >= twoPi) {
+      angles[i] = angles[i] - twoPi;
+    }
+  }
+}
+
+module.exports = normalizeAngles;
+
+},{}],11:[function(require,module,exports){
+'use strict';
+
+function calculateFaceYRimY(data) {
+  const scaleY = data.get('scaleY');
+  const centerY = data.get('centerY');
+  const thickness = data.get('thickness');
+  const isRimDown = data.get('isRimDown');
+  const differenceInYCoordinate =
+      thickness * Math.sqrt(1 - scaleY * scaleY) / 2 / scaleY;
+  let faceY;
+  let rimY;
+  if (isRimDown) {
+    faceY =  centerY - differenceInYCoordinate;
+    rimY =  centerY + differenceInYCoordinate;
+  } else {
+    faceY =  centerY + differenceInYCoordinate;
+    rimY =  centerY - differenceInYCoordinate;
+  }
+  data.set('faceY', faceY);
+  data.set('rimY', rimY);
+}
+
+module.exports = calculateFaceYRimY;
+
+},{}],12:[function(require,module,exports){
+'use strict';
+
 const pi = Math.PI;
 
-function createRimDrawSequence(args) {
-  const {normalizedAngles, colors, isRimDown, counterClockwise} = args;
-  const mergedAnglesColors = mergeAnglesColors(normalizedAngles, colors);
+function createRimDrawSequence(data) {
+  const angles = data.get('angles');
+  const colors = data.get('colors');
+  const isRimDown = data.get('isRimDown');
+  const counterClockwise = data.get('counterClockwise');
+
+  if (isSingleSlicePie()) {
+    data.set('rimDrawSequence', [0, colors[0], pi]);
+    return;
+  }
+
+  const mergedAnglesColors = mergeAnglesColors(angles, colors);
   const indOfAngleBehindZero =
-      findIndOfFirstAngleBehindZero(normalizedAngles, isRimDown);
+      findIndOfFirstAngleBehindZero(angles, isRimDown);
 
   const orderedSeq = createOrderedSequenceFromBehind0ToPi(
       mergedAnglesColors, indOfAngleBehindZero, counterClockwise);
@@ -59,7 +297,11 @@ function createRimDrawSequence(args) {
     rimDrawSequence = createDrawSeqForRimUp(orderedSeq);
   }
 
-  return rimDrawSequence;
+  data.set('rimDrawSequence', rimDrawSequence);
+
+  function isSingleSlicePie() {
+    return colors.length === 1;
+  }
 }
 
 function createDrawSeqForRimUp(orderedSeq) {
@@ -120,25 +362,25 @@ function createOrderedSequenceFromBehind0ToPi(
   return orderedSeq;
 }
 
-function mergeAnglesColors(normalizedAngles, colors) {
+function mergeAnglesColors(angles, colors) {
   const merged = [];
-  colors.forEach((el, i) => merged.push(normalizedAngles[i], colors[i]));
-  merged.push(normalizedAngles[normalizedAngles.length - 1]);
+  colors.forEach((el, i) => merged.push(angles[i], colors[i]));
+  merged.push(angles[angles.length - 1]);
   return merged;
 }
 
-function findIndOfFirstAngleBehindZero(normalizedAngles, isRimDown) {
+function findIndOfFirstAngleBehindZero(angles, isRimDown) {
   let index = 0;
-  for (let i = 0; i < normalizedAngles.length - 1; i++) {
-    if (normalizedAngles[i] === 0) {
+  for (let i = 0; i < angles.length - 1; i++) {
+    if (angles[i] === 0) {
       index = i;
       break;
     }
     if (isRimDown) {
-      if (normalizedAngles[i] > normalizedAngles[index]) {
+      if (angles[i] > angles[index]) {
         index = i;
       }
-    } else if (normalizedAngles[i] < normalizedAngles[index]) {
+    } else if (angles[i] < angles[index]) {
       index = i;
     }
   }
@@ -147,364 +389,117 @@ function findIndOfFirstAngleBehindZero(normalizedAngles, isRimDown) {
 
 module.exports = createRimDrawSequence;
 
-},{}],5:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
-function fillFace(args) {
-  const {ox, oy, radius, cntx, angles, colors, counterClockwise} = args;
-  const originalFillStyle = cntx.fillStyle;
-  if (colors.length === 1) {
-    cntx.beginPath();
-    cntx.arc(ox, oy, radius, 0, 2 * Math.PI);
-    cntx.fillStyle = colors[0];
-    cntx.fill();
-  } else {
-    for (let i = 1; i < angles.length; i++) {
-      cntx.beginPath();
-      cntx.arc(ox, oy, radius, angles[i - 1], angles[i],
-          counterClockwise);
-      cntx.lineTo(ox, oy);
-      cntx.closePath();
-      cntx.fillStyle = colors[i - 1];
-      cntx.fill();
-    }
-  }
-  cntx.fillStyle = originalFillStyle;
-}
-
-module.exports = fillFace;
-
-},{}],6:[function(require,module,exports){
-'use strict';
-
-function fillOptionalArgs(args) {
-  const optionalArgsAndDefaultVals = new Map([
+function create(map) {
+  const optionalProperties = new Map([
     ['scaleY', 0],
     ['rotationAngle', 0],
     ['startAngle', 3 * Math.PI / 2],
     ['counterClockwise', false],
     ['isRimDown', true],
   ]);
-  for (const [key, defaultVal] of optionalArgsAndDefaultVals) {
-    if (!args.has(key)) {
-      args.set(key, defaultVal);
+  const data = new Map(map);
+  data.set('percents', Array.from(map.get('percents')));
+  data.set('colors', Array.from(map.get('colors')));
+  for (const [key, value] of optionalProperties) {
+    if (!data.has(key)) {
+      data.set(key, value);
     }
   }
-  return args;
+  return data;
 }
 
-module.exports = fillOptionalArgs;
+module.exports = create;
 
-},{}],7:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
-function fillRim(args) {
-  const {ox, oy, radius, rimDrawSequence, isRimDown, scaleY, rimThickness,
-      cntx} = args;
+const create = require('./create');
+const anglesColorsMain = require('./angles-colors/main');
+const calculateFaceYRimY = require('./calculate-face-y-rim-y');
+const createRimDrawSequence = require('./create-rim-draw-sequence');
+
+function main(argument) {
+  const data = create(argument);
+  anglesColorsMain(data);
+  calculateFaceYRimY(data);
+  if (isRimPresent()) {
+    createRimDrawSequence(data);
+  }
+
+  function isRimPresent() {
+    return !(data.get('thickness') === 0 || data.get('scaleY') === 1);
+  }
+  return data;
+}
+
+module.exports = main;
+
+},{"./angles-colors/main":9,"./calculate-face-y-rim-y":11,"./create":13,"./create-rim-draw-sequence":12}],15:[function(require,module,exports){
+'use strict';
+
+function face(data) {
+  const centerX = data.get('centerX');
+  const faceY = data.get('faceY');
+  const radius = data.get('radius');
+  const cntx = data.get('cntx');
+  const angles = data.get('angles');
+  if (isSingleSlice()) {
+    cntx.beginPath();
+    cntx.arc(centerX, faceY, radius, 0, 2 * Math.PI);
+    cntx.stroke();
+  } else {
+    for (let i = 1; i < angles.length; i++) {
+      cntx.beginPath();
+      cntx.arc(centerX, faceY, radius, angles[i - 1], angles[i],
+          data.get('counterClockwise'));
+      cntx.lineTo(centerX, faceY);
+      cntx.stroke();
+    }
+  }
+  function isSingleSlice() {
+    return data.get('colors').length === 1;
+  }
+}
+
+module.exports = face;
+
+},{}],16:[function(require,module,exports){
+arguments[4][4][0].apply(exports,arguments)
+},{"./face":15,"./rim":17,"dup":4}],17:[function(require,module,exports){
+'use strict';
+
+function rim(data) {
+  const centerX = data.get('centerX');
+  const faceY = data.get('faceY');
+  const rimY = data.get('rimY');
+  const radius = data.get('radius');
+  const rimDrawSequence = data.get('rimDrawSequence');
+  const cntx = data.get('cntx');
   const originalFillStyle = cntx.fillStyle;
 
-  let rimScale = Math.sqrt(1 - scaleY * scaleY);
   let baseArcCounterClockwise;
   let rimArcCounterClockwise;
-  if (isRimDown) {
+  if (data.get('isRimDown')) {
     baseArcCounterClockwise = false;
     rimArcCounterClockwise = true;
   } else {
-    rimScale = -rimScale;
     baseArcCounterClockwise = true;
     rimArcCounterClockwise = false;
   }
-  const rimThicknessScaled = rimThickness * rimScale / scaleY;
-  let startX = ox + radius;
-  let startY = oy;
-  const oyRim = oy + rimThicknessScaled;
-  let startYRim;
+  const thicknessScaled = faceY - rimY;
+  let startX = centerX + radius;
+  let startY = faceY;
   let endX;
   let endY;
   let i;
 
   for (i = 1; i < rimDrawSequence.length; i += 2) {
-    fillInnerPartOfSlice();
-    startX = endX;
-    startY = endY;
-  }
-
-  cntx.fillStyle = originalFillStyle;
-
-  function fillInnerPartOfSlice() {
-    cntx.beginPath();
-    cntx.moveTo(startX, startY);
-    startYRim = startY + rimThicknessScaled;
-    cntx.lineTo(startX, startYRim);
-    cntx.arc(ox, oyRim, radius, rimDrawSequence[i - 1], rimDrawSequence[i + 1],
-        baseArcCounterClockwise);
-    endX = Math.cos(rimDrawSequence[i + 1]) * radius + ox;
-    endY = Math.sin(rimDrawSequence[i + 1]) * radius + oy;
-    cntx.arc(ox, oy, radius, rimDrawSequence[i + 1], rimDrawSequence[i - 1],
-        rimArcCounterClockwise);
-    cntx.fillStyle = rimDrawSequence[i];
-    cntx.fill();
-  }
-}
-
-module.exports = fillRim;
-
-},{}],8:[function(require,module,exports){
-'use strict';
-
-const validateArgs = require('./validate-args');
-const fillOptionalArgs = require('./fill-optional-args');
-const applyContextStateChanges = require('./apply-context-state-changes');
-const correctOyForThickness = require('./correct-oy-for-thickness');
-const prepareAnglesColors = require('./prepare-angles-n-colors/main');
-const fillFace = require('./fill-face');
-const strokeFace = require('./stroke-face');
-const createRimDrawSequence = require('./create-rim-draw-sequence');
-const fillRim = require('./fill-rim');
-const strokeRim = require('./stroke-rim');
-
-function main(consoleError, Context2dConstructor, map) {
-  if (!(map instanceof Map)) {
-    consoleError('invalid argument');
-    return;
-  } else if (map.has('skipValidation') && !map.get('skipValidation')) {
-    const errorMsg = validateArgs(map, Context2dConstructor);
-    if (errorMsg) {
-      consoleError(errorMsg);
-      return;
-    }
-  }
-
-  const fullOptions = fillOptionalArgs(map);
-  const cntx = fullOptions.get('cntx');
-  cntx.save();
-  applyContextStateChanges({
-    cntx: fullOptions.get('cntx'),
-    ox: fullOptions.get('ox'),
-    oy: fullOptions.get('oy'),
-    strokeColor: fullOptions.get('strokeColor'),
-    strokeWidth: fullOptions.get('strokeWidth'),
-    rotationAngle: fullOptions.get('rotationAngle'),
-    scaleY: fullOptions.get('scaleY'),
-  });
-  correctOyForThickness(fullOptions);
-
-  const preparedAnglesColors = prepareAnglesColors({
-    percentsOriginal: fullOptions.get('percents'),
-    colorsOriginal: fullOptions.get('colors'),
-    startAngle: fullOptions.get('startAngle'),
-    counterClockwise: fullOptions.get('counterClockwise'),
-  });
-  fillFace({
-    ox: fullOptions.get('ox'),
-    oy: fullOptions.get('oy'),
-    radius: fullOptions.get('radius'),
-    cntx: fullOptions.get('cntx'),
-    counterClockwise: fullOptions.get('counterClockwise'),
-    colors: preparedAnglesColors.colors,
-    angles: preparedAnglesColors.angles,
-  });
-
-  let rimDrawSeq;
-  if (isRimVisible()) {
-    if (isSingleSlice()) {
-      rimDrawSeq = [0, preparedAnglesColors.colors[0], Math.PI];
-    } else {
-      rimDrawSeq = createRimDrawSequence({
-        normalizedAngles: preparedAnglesColors.angles,
-        colors: preparedAnglesColors.colors,
-        isRimDown: fullOptions.get('isRimDown'),
-        counterClockwise: fullOptions.get('counterClockwise'),
-      });
-    }
-    fillRim({
-      ox: fullOptions.get('ox'),
-      oy: fullOptions.get('oy'),
-      radius: fullOptions.get('radius'),
-      rimDrawSequence: rimDrawSeq,
-      isRimDown: fullOptions.get('isRimDown'),
-      scaleY: fullOptions.get('scaleY'),
-      rimThickness: fullOptions.get('thickness'),
-      cntx: fullOptions.get('cntx'),
-    });
-  }
-  if (fullOptions.get('strokeWidth') !== 0) {
-    strokeFace({
-      ox: fullOptions.get('ox'),
-      oy: fullOptions.get('oy'),
-      radius: fullOptions.get('radius'),
-      cntx: fullOptions.get('cntx'),
-      counterClockwise: fullOptions.get('counterClockwise'),
-      angles: preparedAnglesColors.angles,
-    });
-    if (isRimVisible()) {
-      strokeRim({
-        ox: fullOptions.get('ox'),
-        oy: fullOptions.get('oy'),
-        radius: fullOptions.get('radius'),
-        rimDrawSequence: rimDrawSeq,
-        isRimDown: fullOptions.get('isRimDown'),
-        scaleY: fullOptions.get('scaleY'),
-        rimThickness: fullOptions.get('thickness'),
-        cntx: fullOptions.get('cntx'),
-      });
-    }
-  }
-  cntx.restore();
-
-  function isRimVisible() {
-    return fullOptions.get('scaleY') !== 1 &&
-      fullOptions.get('thickness') !== 0;
-  }
-
-  function isSingleSlice() {
-    return preparedAnglesColors.colors.length === 1;
-  }
-}
-
-module.exports = main;
-
-},{"./apply-context-state-changes":2,"./correct-oy-for-thickness":3,"./create-rim-draw-sequence":4,"./fill-face":5,"./fill-optional-args":6,"./fill-rim":7,"./prepare-angles-n-colors/main":11,"./stroke-face":13,"./stroke-rim":14,"./validate-args":15}],9:[function(require,module,exports){
-'use strict';
-
-function calcAnglesFromPercents({percents, startAngle, counterClockwise}) {
-  const onePercentAngle = Math.PI / 50;
-  const angles = [startAngle];
-
-  if (counterClockwise) {
-    for (let i = 0; i < percents.length - 1; i++) {
-      angles.push(angles[i] - onePercentAngle * percents[i]);
-    }
-  } else {
-    for (let i = 0; i < percents.length - 1; i++) {
-      angles.push(angles[i] + onePercentAngle * percents[i]);
-    }
-  }
-  angles.push(startAngle);
-
-  return angles;
-}
-
-module.exports = calcAnglesFromPercents;
-
-},{}],10:[function(require,module,exports){
-'use strict';
-
-function filterZeroPercents(percents, colors) {
-  const filteredColors = [];
-  const filteredPercents = percents.filter((el, i) => {
-    if (el !== 0) {
-      filteredColors.push(colors[i]);
-      return true;
-    }
-    return false;
-  });
-  return {
-    percents: filteredPercents,
-    colors: filteredColors,
-  };
-}
-
-module.exports = filterZeroPercents;
-
-},{}],11:[function(require,module,exports){
-'use strict';
-
-const filterZeroPercents = require('./filter-zero-percents');
-const calcAnglesFromPercents = require('./calc-angles-from-percents');
-const normalizeAngles = require('./normalize-angles');
-
-function main(args) {
-  const {percentsOriginal, colorsOriginal, startAngle, counterClockwise} = args;
-  const {colors, percents} =
-      filterZeroPercents(percentsOriginal, colorsOriginal);
-  if (colors.length === 1) {
-    return {
-      colors,
-      angles: [0],
-    };
-  }
-  const angles = calcAnglesFromPercents({
-    percents,
-    startAngle,
-    counterClockwise,
-  });
-  return {
-    colors,
-    angles: normalizeAngles(angles),
-  };
-}
-
-module.exports = main;
-
-},{"./calc-angles-from-percents":9,"./filter-zero-percents":10,"./normalize-angles":12}],12:[function(require,module,exports){
-'use strict';
-
-function normalizeAngles(angles) {
-  const twoPi = 2 * Math.PI;
-  for (let i = 1; i < angles.length - 1; i++) {
-    if (angles[i] < 0) {
-      angles[i] = twoPi + angles[i];
-    } else if (angles[i] >= twoPi) {
-      angles[i] = angles[i] - twoPi;
-    }
-  }
-  return angles;
-}
-
-module.exports = normalizeAngles;
-
-},{}],13:[function(require,module,exports){
-'use strict';
-
-function strokeFace({ox, oy, radius, cntx, angles, counterClockwise}) {
-  if (angles.length === 1) {
-    cntx.beginPath();
-    cntx.arc(ox, oy, radius, 0, 2 * Math.PI);
-    cntx.stroke();
-  } else {
-    for (let i = 1; i < angles.length; i++) {
-      cntx.beginPath();
-      cntx.arc(ox, oy, radius, angles[i - 1], angles[i],
-          counterClockwise);
-      cntx.lineTo(ox, oy);
-      cntx.stroke();
-    }
-  }
-}
-
-module.exports = strokeFace;
-
-},{}],14:[function(require,module,exports){
-'use strict';
-
-function strokeRim(args) {
-  const {ox, oy, radius, rimDrawSequence, isRimDown, scaleY, rimThickness,
-      cntx} = args;
-  const originalFillStyle = cntx.fillStyle;
-
-  let rimScale = Math.sqrt(1 - scaleY * scaleY);
-  let baseArcCounterClockwise;
-  let rimArcCounterClockwise;
-  if (isRimDown) {
-    baseArcCounterClockwise = false;
-    rimArcCounterClockwise = true;
-  } else {
-    rimScale = -rimScale;
-    baseArcCounterClockwise = true;
-    rimArcCounterClockwise = false;
-  }
-  const rimThicknessScaled = rimThickness * rimScale / scaleY;
-  let startX = ox + radius;
-  let startY = oy;
-  const oyRim = oy + rimThicknessScaled;
-  let startYRim;
-  let i;
-
-  for (i = 1; i < rimDrawSequence.length; i += 2) {
     strokeSliceEdgesRightBottom();
-    startX = Math.cos(rimDrawSequence[i + 1]) * radius + ox;
-    startY = Math.sin(rimDrawSequence[i + 1]) * radius + oy;
+    startX = Math.cos(rimDrawSequence[i + 1]) * radius + centerX;
+    startY = Math.sin(rimDrawSequence[i + 1]) * radius + faceY;
   }
   strokeLeftEdgeOfLastSlice();
 
@@ -513,59 +508,61 @@ function strokeRim(args) {
   function strokeSliceEdgesRightBottom() {
     cntx.beginPath();
     cntx.moveTo(startX, startY);
-    cntx.lineTo(startX, startYRim);
-    cntx.arc(ox, oyRim, radius, rimDrawSequence[i - 1], rimDrawSequence[i + 1],
-        baseArcCounterClockwise);
+    cntx.arc(centerX, rimY, radius, rimDrawSequence[i - 1],
+        rimDrawSequence[i + 1], baseArcCounterClockwise);
     cntx.stroke();
   }
 
   function strokeLeftEdgeOfLastSlice() {
     cntx.beginPath();
-    cntx.moveTo(ox - radius, oy);
-    cntx.lineTo(ox - radius, oy + rimThicknessScaled);
+    cntx.moveTo(centerX - radius, faceY);
+    cntx.lineTo(centerX - radius, faceY - thicknessScaled);
     cntx.stroke();
   }
 }
 
-module.exports = strokeRim;
+module.exports = rim;
 
-},{}],15:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
-function validateArgs(args, GlobalCanvas2dContextConstructor) {
-  if (!(args instanceof Map)) {
-    return 'pie chart: arguments must be instance of Map';
+function validateArgument(map, GlobalCanvas2dContextConstructor) {
+  if (!(map instanceof Map)) {
+    return 'pie chart: argument must be instance of Map';
+  }
+  if (!map.has('validateOptions') || map.get('validateOptions') === false) {
+    return '';
   }
 
   const twoPi = 2 * Math.PI;
-  const argumentsNamesAndValidations = new Map([
-    ['percents', (propName) => !Array.isArray(args.get(propName))],
-    ['colors', (propName) => !Array.isArray(args.get(propName))],
-    ['skipValidation', propName => false],
-    ['ox', propName => !Number.isFinite(args.get(propName))],
-    ['oy', propName => !Number.isFinite(args.get(propName))],
+  const optionsNamesAndValidations = new Map([
+    ['percents', propName => !Array.isArray(map.get(propName))],
+    ['colors', propName => !Array.isArray(map.get(propName))],
+    ['validateOptions', () => false],
+    ['centerX', propName => !Number.isFinite(map.get(propName))],
+    ['centerY', propName => !Number.isFinite(map.get(propName))],
     ['radius', propName => {
-      const val = args.get(propName);
+      const val = map.get(propName);
       return !Number.isFinite(val) || val <= 0;
     }],
     ['thickness', propName => {
-      const val = args.get(propName);
+      const val = map.get(propName);
       return !Number.isFinite(val) || val < 0
     }],
     ['strokeWidth', propName => {
-      const val = args.get(propName);
+      const val = map.get(propName);
       return !Number.isFinite(val) || val < 0
     }],
     ['strokeColor', propName => {
-      if (args.get('strokeWidth') !== 0) {
-        const val = args.get(propName);
+      if (map.get('strokeWidth') !== 0) {
+        const val = map.get(propName);
         return typeof val !== 'string' || val === '';
       } else {
         return false;
       }
     }],
     ['cntx', propName => {
-      const val = args.get(propName);
+      const val = map.get(propName);
       if (typeof val !== 'object' || val === null) {
         return true;
       } else {
@@ -574,47 +571,46 @@ function validateArgs(args, GlobalCanvas2dContextConstructor) {
       }
     }],
     ['scaleY', propName => {
-      const val = args.get(propName);
-      return args.has(propName) &&
+      const val = map.get(propName);
+      return map.has(propName) &&
           (!Number.isFinite(val) || val <= 0 || val > 1);
     }],
     ['rotationAngle', propName => {
-      const val = args.get(propName);
-      return args.has(propName) &&
+      const val = map.get(propName);
+      return map.has(propName) &&
           (!Number.isFinite(val) || val <= -twoPi || val >= twoPi);
     }],
     ['startAngle', propName => {
-      const val = args.get(propName);
-      return args.has(propName) &&
+      const val = map.get(propName);
+      return map.has(propName) &&
           (!Number.isFinite(val) || val < 0 || val >= twoPi);
     }],
     ['counterClockwise', propName => {
-      return args.has(propName) && typeof args.get(propName) !== 'boolean';
+      return map.has(propName) && typeof map.get(propName) !== 'boolean';
     }],
     ['isRimDown', propName => {
-      return args.has(propName) && typeof args.get(propName) !== 'boolean';
+      return map.has(propName) && typeof map.get(propName) !== 'boolean';
     }],
-    ['skipValidation', () => false],
   ]);
 
-  for (const key of args.keys()) {
-    if (!argumentsNamesAndValidations.has(key)) {
-      return  'pie chart: arguments map contains unknown key';
+  for (const key of map.keys()) {
+    if (!optionsNamesAndValidations.has(key)) {
+      return  'pie chart: argument map contains unknown key';
     }
   }
 
-  for (const [propName, isInvalid] of argumentsNamesAndValidations) {
+  for (const [propName, isInvalid] of optionsNamesAndValidations) {
     if (isInvalid(propName)) {
       return 'pie chart: invalid or absent ' + propName;
     }
   }
 
-  return hasErrorInColorsOrPercents(args) || '';
+  return hasErrorInColorsOrPercents(map) || '';
 }
 
-function hasErrorInColorsOrPercents(args) {
-  const percents = args.get('percents');
-  const colors = args.get('colors');
+function hasErrorInColorsOrPercents(map) {
+  const percents = map.get('percents');
+  const colors = map.get('colors');
   if (percents.length !== colors.length) {
     return 'pie chart: different ammount of colors/percents';
   }
@@ -638,6 +634,6 @@ function hasErrorInColorsOrPercents(args) {
   }
 }
 
-module.exports = validateArgs;
+module.exports = validateArgument;
 
 },{}]},{},[1]);
