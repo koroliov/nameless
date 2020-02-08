@@ -6,13 +6,13 @@ const sinon = require('sinon');
 
 tp(`fills the face and rim, does not change the data by itself`, t => {
   const data = new Map([
-    ['rimDrawSequence', Symbol('the actual value does not mean in this test')],
+    ['rimDrawSequence', Symbol('actual value does not matter in this test')],
   ]);
   const spySet = sinon.spy(data, 'set');
   const spyDelete = sinon.spy(data, 'delete');
   const spyClear = sinon.spy(data, 'clear');
   const mainDeps = {
-    './face': sinon.stub().returns(data),
+    './face': sinon.fake(),
     './rim': sinon.fake(),
   };
   const main = proxyquire('pie/fill/main', mainDeps);
@@ -43,7 +43,7 @@ itself`, t => {
   const spyDelete = sinon.spy(data, 'delete');
   const spyClear = sinon.spy(data, 'clear');
   const mainDeps = {
-    './face': sinon.stub().returns(data),
+    './face': sinon.fake(),
     './rim': sinon.fake(),
   };
   const main = proxyquire('pie/fill/main', mainDeps);
