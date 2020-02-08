@@ -21,7 +21,6 @@ function rim(data) {
   const thicknessScaled = faceY - rimY;
   let startX = centerX + radius;
   let startY = faceY;
-  let startYRim;
   let endX;
   let endY;
   let i;
@@ -38,7 +37,6 @@ function rim(data) {
   function strokeSliceEdgesRightBottom() {
     cntx.beginPath();
     cntx.moveTo(startX, startY);
-    cntx.lineTo(startX, startYRim);
     cntx.arc(centerX, rimY, radius, rimDrawSequence[i - 1],
         rimDrawSequence[i + 1], baseArcCounterClockwise);
     cntx.stroke();
