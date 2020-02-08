@@ -2079,6 +2079,34 @@ angles2RimUp: {
 
 }
 
+oneSlice: {
+
+  tp('rim up', t => {
+    const data = new Map([
+      ['colors', ['col 1']],
+      ['isRimDown', false],
+      ['counterClockwise', false],
+    ]);
+    createRimDrawSequence(data);
+    const expected = [0, 'col 1', pi];
+    t.deepEqual(data.get('rimDrawSequence'), expected);
+    t.end();
+  });
+
+  tp('rim down', t => {
+    const data = new Map([
+      ['colors', ['col 1']],
+      ['isRimDown', true],
+      ['counterClockwise', false],
+    ]);
+    createRimDrawSequence(data);
+    const expected = [0, 'col 1', pi];
+    t.deepEqual(data.get('rimDrawSequence'), expected);
+    t.end();
+  });
+
+}
+
 tp('it does not change the data, except for setting rimDrawSequence', t => {
   const data = new Map([
     ['angles', [5, 4, 5]],

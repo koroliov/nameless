@@ -7,6 +7,12 @@ function createRimDrawSequence(data) {
   const colors = data.get('colors');
   const isRimDown = data.get('isRimDown');
   const counterClockwise = data.get('counterClockwise');
+
+  if (isSingleSlicePie()) {
+    data.set('rimDrawSequence', [0, colors[0], pi]);
+    return;
+  }
+
   const mergedAnglesColors = mergeAnglesColors(angles, colors);
   const indOfAngleBehindZero =
       findIndOfFirstAngleBehindZero(angles, isRimDown);
@@ -22,6 +28,10 @@ function createRimDrawSequence(data) {
   }
 
   data.set('rimDrawSequence', rimDrawSequence);
+
+  function isSingleSlicePie() {
+    return colors.length === 1;
+  }
 }
 
 function createDrawSeqForRimUp(orderedSeq) {
