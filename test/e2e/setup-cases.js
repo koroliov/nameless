@@ -232,6 +232,28 @@
       createTestLink(testName, argumentMap);
     }],
 
+    ['pie/counter-clockwise-works', testName => {
+      const argumentMap = new Map([
+        ['centerX', centerX],
+        ['centerY', centerY],
+        ['radius', radius],
+        ['thickness', 40],
+        ['percents', [35, 25, 40]],
+        ['colors', ['#f91919', '#fff918', '#01ff2c']],
+        ['strokeColor', '#000000'],
+        ['strokeWidth', 0.5],
+        ['cntx', cntx],
+
+        ['scaleY', 0.5],
+        ['startAngle', 0],
+        ['counterClockwise', true],
+        ['isRimDown', true],
+        ['rotationAngle', 0],
+        ['validateOptions', false],
+      ]);
+      createTestLink(testName, argumentMap);
+    }],
+
     ['pie/optional-args-work', testName => {
       const argumentMap = new Map([
         ['centerX', centerX],
