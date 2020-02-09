@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "test": "tape",
-    "build": "browserify src/main.js -o build/charts-3d.js",
+    "build": "browserify src/main.js -o build/charts3d.js",
     "val-html": "java -jar tools/vnu.jar",
     "val-css": "java -jar tools/css-validator.jar 1>/dev/null"
   },

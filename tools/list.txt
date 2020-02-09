@@ -6,6 +6,9 @@ vnu-18.11.5.jar
 https://github.com/validator/validator/releases/download/18.11.5/vnu.jar_18.11.5.zip
 from https://github.com/validator/validator/releases
 
+closure-compiler-v20200204.jar
+from https://github.com/google/closure-compiler
+
 selenium-server-standalone-4.0.0-alpha-2.jar
 https://selenium-release.storage.googleapis.com/4.0/selenium-server-standalone-4.0.0-alpha-2.jar
 from https://selenium-release.storage.googleapis.com/index.html
