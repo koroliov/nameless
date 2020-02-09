@@ -26,6 +26,7 @@
 
         ['scaleY', 0.5],
         ['startAngle', 0],
+        ['counterClockwise', false],
         ['isRimDown', true],
         ['rotationAngle', 0],
         ['validateOptions', false],
@@ -47,6 +48,7 @@
 
         ['scaleY', 0.5],
         ['startAngle', 0],
+        ['counterClockwise', false],
         ['isRimDown', true],
         ['rotationAngle', 1],
         ['validateOptions', false],
@@ -68,6 +70,7 @@
 
         ['scaleY', 0.5],
         ['startAngle', 0],
+        ['counterClockwise', false],
         ['isRimDown', true],
         ['rotationAngle', -1],
         ['validateOptions', false],
@@ -89,6 +92,7 @@
 
         ['scaleY', 0.5],
         ['startAngle', 0],
+        ['counterClockwise', false],
         ['isRimDown', false],
         ['rotationAngle', 0],
         ['validateOptions', false],
@@ -110,6 +114,7 @@
 
         ['scaleY', 0.5],
         ['startAngle', 0],
+        ['counterClockwise', false],
         ['isRimDown', true],
         ['rotationAngle', 0],
         ['validateOptions', false],
@@ -131,6 +136,7 @@
 
         ['scaleY', 0.5],
         ['startAngle', 0],
+        ['counterClockwise', false],
         ['isRimDown', true],
         ['rotationAngle', 0],
         ['validateOptions', false],
@@ -152,6 +158,7 @@
 
         ['scaleY', 0.5],
         ['startAngle', 0],
+        ['counterClockwise', false],
         ['isRimDown', false],
         ['rotationAngle', 0],
         ['validateOptions', false],
@@ -173,6 +180,7 @@
 
         ['scaleY', 0.5],
         ['startAngle', 0],
+        ['counterClockwise', false],
         ['isRimDown', false],
         ['rotationAngle', 0],
         ['validateOptions', false],
@@ -194,6 +202,7 @@
 
         ['scaleY', 1],
         ['startAngle', 0],
+        ['counterClockwise', false],
         ['isRimDown', false],
         ['rotationAngle', 0],
         ['validateOptions', false],
@@ -215,6 +224,7 @@
 
         ['scaleY', 1],
         ['startAngle', 0],
+        ['counterClockwise', false],
         ['isRimDown', false],
         ['rotationAngle', 0],
         ['validateOptions', false],
