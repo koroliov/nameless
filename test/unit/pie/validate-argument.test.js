@@ -598,11 +598,11 @@ tp('validate rotationAngle', t => {
   result = validateArgument(argument, MockGlobalCanvasContext2d);
   t.equal(result, 'pie chart: invalid or absent rotationAngle');
 
-  argument.set('rotationAngle', -2 * Math.PI);
+  argument.set('rotationAngle', -Math.PI / 2 - 0.1);
   result = validateArgument(argument, MockGlobalCanvasContext2d);
   t.equal(result, 'pie chart: invalid or absent rotationAngle');
 
-  argument.set('rotationAngle', 2 * Math.PI);
+  argument.set('rotationAngle', Math.PI + 0.1);
   result = validateArgument(argument, MockGlobalCanvasContext2d);
   t.equal(result, 'pie chart: invalid or absent rotationAngle');
 
@@ -614,11 +614,11 @@ tp('validate rotationAngle', t => {
   result = validateArgument(argument, MockGlobalCanvasContext2d);
   t.equal(result, '');
 
-  argument.set('rotationAngle', -5.5);
+  argument.set('rotationAngle', -Math.PI / 2);
   result = validateArgument(argument, MockGlobalCanvasContext2d);
   t.equal(result, '');
 
-  argument.set('rotationAngle', 5.5);
+  argument.set('rotationAngle', Math.PI / 2);
   result = validateArgument(argument, MockGlobalCanvasContext2d);
   t.equal(result, '');
   t.end();

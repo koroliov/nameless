@@ -535,6 +535,7 @@ function validateArgument(map, GlobalCanvas2dContextConstructor) {
   }
 
   const twoPi = 2 * Math.PI;
+  const halfPi = Math.PI / 2;
   const optionsNamesAndValidations = new Map([
     ['percents', propName => !Array.isArray(map.get(propName))],
     ['colors', propName => !Array.isArray(map.get(propName))],
@@ -578,7 +579,7 @@ function validateArgument(map, GlobalCanvas2dContextConstructor) {
     ['rotationAngle', propName => {
       const val = map.get(propName);
       return map.has(propName) &&
-          (!Number.isFinite(val) || val <= -twoPi || val >= twoPi);
+          (!Number.isFinite(val) || val < -halfPi || val > halfPi);
     }],
     ['startAngle', propName => {
       const val = map.get(propName);
