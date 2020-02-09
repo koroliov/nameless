@@ -1,4 +1,4 @@
-# charts3d — 3d-like charts with an HTML canvas element
+# texas — 3d-like charts with an HTML canvas element
 
 *currently only the pie chart is available*
 
@@ -11,16 +11,16 @@ If you want to use it in another environment, like Node.js, it can be done relat
 Include the script (either minified or not) from the build directory of the repository:
 
 ```html
-<script src="charts3d.min.js"></script>
+<script src="texas.min.js"></script>
 ```
 
-This will create a global `window.charts3d` property on your page.
+This will create a global `window.texas` property on your page.
 
 **It doesn't fill the background or clear anything on your canvas.** So you must pay attention to this and to either fill the canvas background yourself or use the background of HTML element(s), which are visible behind the canvas. But if you rely on the background of HTML elements and the user decides to save the canvas as an image, its background will be transparent. Also pay attention to transformations already applied to the canvas like scaling, translation etc.
 
 ### pie
 
-To create a pie chart you need to call `window.charts3d.pie` as a function **not as a constructor** and provide it a map with options (some of which can be omitted):
+To create a pie chart you need to call `window.texas.pie` as a function **not as a constructor** and provide it a map with options (some of which can be omitted):
 
 ```javascript
 const map = new Map([
@@ -41,7 +41,7 @@ const map = new Map([
   ['rotationAngle', 0],
   ['validateOptions', false],
 ]);
-charts3d.pie(map);
+texas.pie(map);
 ```
 
 This creates ![a pie with 4 slices "rotated" by the angle arccosine(`scaleY`) around the ox axis](examples/scaled-4-slices-rim-down.png?raw=true "a pie with 4 slices \"rotated\" by the angle arccosine(`scaleY`) around the ox axis") if the background was previously filled with white
@@ -96,7 +96,7 @@ const map = new Map([
   ['rotationAngle', 0],
   ['validateOptions', false],
 ]);
-charts3d.pie(map);
+texas.pie(map);
 ```
 
 This creates ![a pie with 4 slices "rotated" by the angle -arccosine(`scaleY`) around the ox axis](examples/scaled-4-slices-rim-up.png?raw=true "") if the background was previously filled with white
@@ -121,7 +121,7 @@ const map = new Map([
   ['rotationAngle', 0],
   ['validateOptions', false],
 ]);
-charts3d.pie(map);
+texas.pie(map);
 ```
 
 This creates ![a circular pie](examples/not-scaled-4-slices.png?raw=true "") if the background was previously filled with white
@@ -146,7 +146,7 @@ const map = new Map([
   ['rotationAngle', 1],
   ['validateOptions', false],
 ]);
-charts3d.pie(map);
+texas.pie(map);
 ```
 
 This creates ![a circular pie](examples/scaled-4-slices-rotated.png?raw=true "") if the background was previously filled with white

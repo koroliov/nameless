@@ -288,7 +288,7 @@
       e.preventDefault();
       clearCanvas();
       image.setAttribute('src', 'pngs/' + testName + '.png');
-      charts3d.pie(argumentMap);
+      texas.pie(argumentMap);
     });
     li.appendChild(a);
     docFrag.appendChild(li);

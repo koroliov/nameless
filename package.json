@@ -1,15 +1,15 @@
 {
-  "name": "charts3d",
+  "name": "texas",
   "version": "1.0.0",
   "description": "",
   "main": "",
   "scripts": {
     "test": "tape",
     "test-e2e": "node test/e2e/test.js",
-    "build": "browserify src/main.js -o build/charts3d.js",
+    "build": "browserify src/main.js -o build/texas.js",
     "val-html": "java -jar tools/vnu.jar",
     "val-css": "java -jar tools/css-validator.jar 1>/dev/null",
-    "minify": "java -jar tools/closure-compiler.jar --js build/charts3d.js --js_output_file build/charts3d.min.js"
+    "minify": "java -jar tools/closure-compiler.jar --js build/texas.js --js_output_file build/texas.min.js"
   },
   "private": false,
   "author": "Dmitry Koroliov",
