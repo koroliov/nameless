@@ -1,3 +1,6 @@
-"val-html": "java -jar tools/vnu.jar file.html",
-"val-css": "java -jar tools/css-validator.jar 1>/dev/null \
-  file:/path/to/file.html"
+user provided values are in the brackets, not every command availabe in the package.json scripts section are present here, only those are, which require an example
+
+npm run test [test/unit/pie/main.test.js]
+npm run val-html [file.html]
+npm run val-css file:[file.html]
+npm run test-e2e [firefox/opera/chrome]
