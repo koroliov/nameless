@@ -44,7 +44,9 @@ const map = new Map([
 texas.pie(map);
 ```
 
-This creates ![a pie with 4 slices "rotated" by the angle arccosine(`scaleY`) around the ox axis](examples/scaled-4-slices-rim-down.png?raw=true "a pie with 4 slices \"rotated\" by the angle arccosine(`scaleY`) around the ox axis") if the background was previously filled with white
+This creates (if the background was previously filled with white):
+
+![a pie with 4 slices "rotated" by the angle arccosine(`scaleY`) around the ox axis](examples/scaled-4-slices-rim-down.png?raw=true "a pie with 4 slices \"rotated\" by the angle arccosine(`scaleY`) around the ox axis") 
 
 #### pie's options:
 
