@@ -1,4 +1,4 @@
-# texas — 3d-like chart examples with an HTML canvas element
+#3d-like chart examples with an HTML canvas element
 
 *currently only the pie chart is available*
 
